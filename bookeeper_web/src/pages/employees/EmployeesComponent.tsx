@@ -1,8 +1,8 @@
 
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { Employee, EmployeeData } from '../../schema/employee';
+import { Employee, EmployeeData, employeeFormOptions } from '../../schema/employee';
+import Form from '../common/Form';
 
 interface Props {
   employeesData: EmployeeData[],
@@ -20,13 +20,13 @@ export default function ExampleNewsComponent(props: Props) {
   const classes = useStyles();
   const { employeesData, addEmployee } = props;
 
-  const newEmployeeData = new Employee(
-    'John',
-    'Doe',
-    125000,
-  );
-
   return (<>
+    <Form
+      action="add employee"
+      title="add employee"
+      options={employeeFormOptions}
+      onSubmit={addEmployee}
+    />
     <div className={classes.card}>
       {employeesData.map((employee: EmployeeData, id: number) => {
         return (
@@ -36,6 +36,5 @@ export default function ExampleNewsComponent(props: Props) {
         );
       })}
     </div>
-    <Button onClick={() => addEmployee(newEmployeeData)} >ADD</Button>
   </>);
 }

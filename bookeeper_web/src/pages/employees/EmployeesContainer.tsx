@@ -37,9 +37,10 @@ export default function NewsDataContainer() {
     listenForEmployeesChange();
   }, [getEmployees, listenForEmployeesChange]);
 
-  const addEmployee = (employee: Employee) => {
-    const ref = firestore.collection('employees');
-    ref.withConverter(employeeConverter).add(employee);
+  const addEmployee = async (employee: Employee) => {
+    const employeesRef = firestore.collection('employees');
+    const employeeRef = await employeesRef.withConverter(employeeConverter).add(employee);
+    return employeeRef;
   };
 
   return <EmployeesComponent employeesData={employeesData} addEmployee={addEmployee} />;
