@@ -56,12 +56,6 @@ export const employeeFormOptions = [
     type: 'number',
     required: true,
   },
-  {
-    key: 'num_withholdings',
-    label: 'number of withholdings',
-    type: 'number',
-    required: true,
-  },
 ];
 
 export class Employee {
@@ -75,7 +69,7 @@ export class Employee {
     readonly city: string,
     readonly state: string,
     readonly zip_code: number,
-    readonly num_withholdings: number,
+    readonly num_withholdings: number = 0,
   ) { }
 
   getName(): string {

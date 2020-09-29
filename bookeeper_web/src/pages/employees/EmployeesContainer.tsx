@@ -5,6 +5,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useFirebase, useFirestore } from 'react-redux-firebase';
 import EmployeesComponent from './EmployeesComponent';
 import { Employee, EmployeeData, employeeConverter } from '../../schema/employee';
+import { payEmployee } from '../../utils/functions';
 
 export default function EmployeesDataContainer() {
   const firestore = useFirestore();
@@ -38,11 +39,5 @@ export default function EmployeesDataContainer() {
     listenForEmployeesChange();
   }, [getEmployees, listenForEmployeesChange]);
 
-  const addEmployee = async (employee: Employee) => {
-    const employeesRef = firestore.collection('employees');
-    const employeeRef = await employeesRef.withConverter(employeeConverter).add(employee);
-    return employeeRef;
-  };
-
-  return <EmployeesComponent employeesData={employeesData} addEmployee={addEmployee} />;
+  return <EmployeesComponent employeesData={employeesData} />;
 }
