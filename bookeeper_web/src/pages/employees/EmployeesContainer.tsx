@@ -6,7 +6,7 @@ import { useFirebase, useFirestore } from 'react-redux-firebase';
 import EmployeesComponent from './EmployeesComponent';
 import { Employee, EmployeeData, employeeConverter } from '../../schema/employee';
 
-export default function NewsDataContainer() {
+export default function EmployeesDataContainer() {
   const firestore = useFirestore();
   useFirebase();
   const [employeesData, setEmployeesData] = useState<EmployeeData[]>([]);
@@ -31,6 +31,7 @@ export default function NewsDataContainer() {
     const employeesRef = firestore.collection('employees').withConverter(employeeConverter);
     employeesRef.onSnapshot(handleSnapshot);
   }, [firestore]);
+
 
   useEffect(() => {
     getEmployees();

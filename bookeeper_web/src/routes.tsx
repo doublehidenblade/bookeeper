@@ -8,15 +8,18 @@ import {
   Redirect,
   Route,
   Switch,
+  Link,
 } from 'react-router-dom';
-import Navbar from './pages/Navbar';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import history from './history';
+
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
 // const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
 // const Customers = React.lazy(() => import('./pages/customers/CustomersContainer'));
 // const Inventory = React.lazy(() => import('./pages/inventory/InventoryContainer'));
 
-function PrivateRoute(args: { component: JSX.Element, path: string }) {
+function PrivateRoute(args: { path?: string, render: (props: any) => JSX.Element, exact?: boolean }) {
   const auth = useSelector((state: { firebase: { auth: any; }; }) => state.firebase.auth);
   return (isLoaded(auth) && !isEmpty(auth) ? <Route {...args} /> :
     <Route
@@ -35,9 +38,8 @@ function RedirectRoute(args: any) {
   const urlParams = new URLSearchParams(str);
   const redirect = urlParams.get('redirect');
   if (!redirect) {
-    return <Route exact component={Home} path='/' />;
+    return <PrivateRoute exact path="/" render={(props) => (<BKErrorBoundary><Home {...props} /></BKErrorBoundary>)} />;
   }
-
   return (<PrivateRoute
     render={() => (
       <Redirect
@@ -45,31 +47,20 @@ function RedirectRoute(args: any) {
           pathname: '/' + redirect,
         }}
       />)}
-    {...args}
   />);
 
 }
 
 interface Props { }
 
-function ErrorWrap(component: {} | null | undefined) {
-  return (
-    <BKErrorBoundary>
-      {component}
-    </BKErrorBoundary>
-  )
-}
-
 const RouteComponent: React.FC<Props> = () => (
-  <BrowserRouter>
-    <Navbar />
+  <BrowserRouter history={history}>
     <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>}>
+      <Link to="/">Home</Link>
       <Switch>
-        {/* <RedirectRoute path='/' /> */}
-        <Route exact component={Employees} path="/employees" />
-        {/* <PrivateRoute component={ErrorWrap(Vendors)} path="/vendors" />
-        <PrivateRoute component={ErrorWrap(Customers)} path="/customers" />
-        <PrivateRoute component={ErrorWrap(Inventory)} path="/inventory" /> */}
+        <RedirectRoute exact path='/' />
+        <Route exact path="/login" render={(props) => (<BKErrorBoundary><Login {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/employees" render={(props) => (<BKErrorBoundary><Employees {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>

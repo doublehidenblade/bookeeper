@@ -20,6 +20,7 @@ class BKErrorBoundary extends React.Component<{}, State> {
       errorInfo: errorInfo
     });
     // You can also log error messages to an error reporting service here
+    console.error('Error caught: ', error);
   }
 
   render() {
