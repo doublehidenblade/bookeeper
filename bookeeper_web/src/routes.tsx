@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import history from './history';
 
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
+const Payrolls = React.lazy(() => import('./pages/payrolls/PayrollsContainer'));
 // const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
 // const Customers = React.lazy(() => import('./pages/customers/CustomersContainer'));
 // const Inventory = React.lazy(() => import('./pages/inventory/InventoryContainer'));
@@ -61,6 +62,7 @@ const RouteComponent: React.FC<Props> = () => (
         <RedirectRoute exact path='/' />
         <Route exact path="/login" render={(props) => (<BKErrorBoundary><Login {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/employees" render={(props) => (<BKErrorBoundary><Employees {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/payrolls" render={(props) => (<BKErrorBoundary><Payrolls {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>

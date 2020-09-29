@@ -1,6 +1,39 @@
 import * as firebase from "firebase/app";
 import { classToPlain, plainToClass } from 'class-transformer';
 
+export const payrollTableOptions = [
+  {
+    key: 'employee_name',
+    label: 'employee name',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'date',
+    label: 'date',
+    type: 'date',
+    required: true,
+  },
+  {
+    key: 'salary',
+    label: 'salary',
+    type: 'number',
+    required: true,
+  },
+  {
+    key: 'disbursement',
+    label: 'disbursement',
+    type: 'number',
+    required: true,
+  },
+  {
+    key: 'withholding',
+    label: 'withholding',
+    type: 'number',
+    required: true,
+  },
+];
+
 export class Payroll {
   constructor(
     readonly date: firebase.firestore.Timestamp,

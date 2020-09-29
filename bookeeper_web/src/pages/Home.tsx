@@ -52,7 +52,7 @@ const Home: React.FunctionComponent<RouteComponentProps> = (props) => {
         <Button>Vendors</Button>
       </ButtonGroup>
       <ButtonGroup size="small" aria-label="small outlined button group">
-        <Button>One</Button>
+        <Button onClick={() => redirectTo('payrolls')}>Payrolls</Button>
         <Button>Two</Button>
         <Button>Three</Button>
       </ButtonGroup>

@@ -6,6 +6,7 @@ import { addEmployee, payEmployee } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import SpinnerButton from '../common/SpinnerButton'
+import Table from '../common/Table'
 
 interface Props {
   employeesData: EmployeeData[],
@@ -18,7 +19,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 // 3. export the component
-export default function ExampleNewsComponent(props: Props) {
+export default function EmployeesComponent(props: Props) {
   const classes = useStyles();
   const firestore = useFirestore();
   const { employeesData } = props;
@@ -31,17 +32,22 @@ export default function ExampleNewsComponent(props: Props) {
       onSubmit={(data) => addEmployee(firestore, data)}
     />
     <div className={classes.card}>
-      {employeesData.map((employee: EmployeeData, id: number) => {
-        return (
-          <div key={id}>
-            {employee.data.getName()}
-            <SpinnerButton submitAction={() => payEmployee(firestore, {
+      <Table
+        headerData={
+          employeeFormOptions.map(option => option.label)
+        }
+        data={
+          employeesData.map((employee: EmployeeData, id: number) => {
+            const button = (<SpinnerButton key={id} submitAction={() => payEmployee(firestore, {
               employee_id: employee.id,
               salary: employee.data.salary
-            })} actionName="pay" />
-          </div>
-        );
-      })}
+            })} actionName="pay" />);
+            return (
+              [...employeeFormOptions.map(option => employee.data[option.key]), button]
+            )
+          })
+        }
+      />
     </div>
   </>);
 }
