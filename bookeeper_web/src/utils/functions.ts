@@ -33,6 +33,7 @@ export const payEmployee = async (firestore: Firestore, data: { employee_id: str
     t.update(ref, {
       payroll: data.payroll + disbursement,
       payroll_withholding: data.payroll_withholding + withholding,
+      cash: data.cash + salary,
     });
   });
 
