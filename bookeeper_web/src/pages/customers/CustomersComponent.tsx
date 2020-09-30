@@ -8,9 +8,13 @@ import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
 import { PRICE } from '../../utils/constants'
 import { partConverter } from '../../schema/part';
+import { LoadState } from '../../utils/types';
+import Spinner from '../common/Spinner'
+import LazyComponent from '../common/LazyComponent';
 
 interface Props {
   customersData: CustomerData[],
+  dataLoadState: LoadState
 }
 
 // 2. style using Materail-UI
@@ -23,21 +27,21 @@ const useStyles = makeStyles(() => ({
 export default function CustomersComponent(props: Props) {
   const classes = useStyles();
   const firestore = useFirestore();
-  const { customersData } = props;
+  const { customersData, dataLoadState } = props;
   const [availableQuantity, setAvailableQuantity] = useState(0);
 
   const getAvailableQuantity = useCallback(() => getAvailableUnitQuantity(firestore).then(result => setAvailableQuantity(result)), [firestore]);
 
   const listenForPartsChange = useCallback(() => {
     const partsRef = firestore.collection('parts').withConverter(partConverter);
-    partsRef.onSnapshot(() => {
+    return partsRef.onSnapshot(() => {
       getAvailableQuantity();
     });
   }, [firestore, getAvailableQuantity]);
 
   useEffect(() => {
     getAvailableQuantity();
-    listenForPartsChange();
+    return listenForPartsChange();
   }, [firestore, getAvailableQuantity, listenForPartsChange]);
 
   const invoiceOptions = [
@@ -66,32 +70,34 @@ export default function CustomersComponent(props: Props) {
       ))}
     />
     <div className={classes.card}>
-      <Table
-        headerData={
-          customerFormOptions.map(option => option.label)
-        }
-        data={
-          customersData.map((customer: CustomerData, id: number) => {
-            const button = (
-              <Form
-                key={id}
-                action="purchase"
-                title="purchase"
-                options={invoiceOptions}
-                onSubmit={(data: { quantity: number }) => makeInvoice(firestore, {
-                  customer_id: customer.id,
-                  quantity: data.quantity,
-                  available_quantity: availableQuantity,
-                  price: PRICE,
-                })}
-                text={"Available quantity: " + availableQuantity}
-              />);
-            return (
-              [...customerFormOptions.map(option => customer.data[option.key]), button]
-            )
-          })
-        }
-      />
+      <LazyComponent dataLoadState={dataLoadState} >
+        <Table
+          headerData={
+            customerFormOptions.map(option => option.label)
+          }
+          data={
+            customersData.map((customer: CustomerData, id: number) => {
+              const button = (
+                <Form
+                  key={id}
+                  action="invoice"
+                  title="invoice"
+                  options={invoiceOptions}
+                  onSubmit={(data: { quantity: number }) => makeInvoice(firestore, {
+                    customer_id: customer.id,
+                    quantity: data.quantity,
+                    available_quantity: availableQuantity,
+                    price: PRICE,
+                  })}
+                  text={"Available quantity: " + availableQuantity}
+                />);
+              return (
+                [...customerFormOptions.map(option => customer.data[option.key]), button]
+              )
+            })
+          }
+        />
+      </LazyComponent>
     </div>
   </>);
 }

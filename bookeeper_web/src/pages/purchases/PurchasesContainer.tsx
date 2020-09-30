@@ -7,12 +7,14 @@ import { Purchase, PurchaseData, PurchaseTableData, purchaseConverter } from '..
 import { vendorConverter, Vendor } from '../../schema/vendor';
 import { firebaseTimestampToDateString } from '../../utils/helpers';
 import { PRICE_PER_PART } from '../../utils/constants';
+import { LoadState } from '../../utils/types';
 
 export default function PurchasesDataContainer() {
   const firestore = useFirestore();
   useFirebase();
   const [purchasesData, setPurchasesData] = useState<PurchaseData[]>([]);
   const [purchasesTableData, setPurchasesTableData] = useState<PurchaseTableData[]>([]);
+  const [dataLoadState, setDataLoadState] = useState<LoadState>(LoadState.loading)
 
   const purchasesTableDataPromise: Promise<PurchaseTableData[]> = useMemo(async () => {
     return Promise.all(purchasesData.map(async (purchaseData: PurchaseData) => {
@@ -47,21 +49,25 @@ export default function PurchasesDataContainer() {
     setPurchasesData(loaded);
   }
 
+  const purchasesRef = useMemo(() => firestore.collection('purchases').withConverter(purchaseConverter).orderBy('date', 'desc'), [firestore]);
+
   const getPurchases = useCallback(async () => {
-    const ref = firestore.collection('purchases');
-    ref.withConverter(purchaseConverter).get().then(handleSnapshot);
-  }, [firestore]);
+    setDataLoadState(LoadState.loading);
+    await purchasesRef.get()
+      .then(handleSnapshot)
+      .catch(() => setDataLoadState(LoadState.error))
+      .then(() => setDataLoadState(LoadState.loaded))
+  }, [purchasesRef]);
 
   const listenForPurchasesChange = useCallback(() => {
-    const purchasesRef = firestore.collection('purchases').withConverter(purchaseConverter);
-    purchasesRef.onSnapshot(handleSnapshot);
-  }, [firestore]);
+    return purchasesRef.onSnapshot(handleSnapshot);
+  }, [purchasesRef]);
 
 
   useEffect(() => {
     getPurchases();
-    listenForPurchasesChange();
+    return listenForPurchasesChange();
   }, [getPurchases, listenForPurchasesChange]);
 
-  return <PurchasesComponent purchasesTableData={purchasesTableData} />;
+  return <PurchasesComponent purchasesTableData={purchasesTableData} dataLoadState={dataLoadState} />;
 }

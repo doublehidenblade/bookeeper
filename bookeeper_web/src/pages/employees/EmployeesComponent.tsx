@@ -7,9 +7,12 @@ import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import SpinnerButton from '../common/SpinnerButton'
 import Table from '../common/Table'
+import { LoadState } from '../../utils/types';
+import LazyComponent from '../common/LazyComponent';
 
 interface Props {
   employeesData: EmployeeData[],
+  dataLoadState: LoadState,
 }
 
 // 2. style using Materail-UI
@@ -22,7 +25,7 @@ const useStyles = makeStyles(() => ({
 export default function EmployeesComponent(props: Props) {
   const classes = useStyles();
   const firestore = useFirestore();
-  const { employeesData } = props;
+  const { employeesData, dataLoadState } = props;
 
   return (<>
     <Form
@@ -42,22 +45,24 @@ export default function EmployeesComponent(props: Props) {
       ))}
     />
     <div className={classes.card}>
-      <Table
-        headerData={
-          employeeFormOptions.map(option => option.label)
-        }
-        data={
-          employeesData.map((employee: EmployeeData, id: number) => {
-            const button = (<SpinnerButton key={id} submitAction={() => payEmployee(firestore, {
-              employee_id: employee.id,
-              salary: employee.data.salary
-            })} actionName="pay" />);
-            return (
-              [...employeeFormOptions.map(option => employee.data[option.key]), button]
-            )
-          })
-        }
-      />
+      <LazyComponent dataLoadState={dataLoadState} >
+        <Table
+          headerData={
+            employeeFormOptions.map(option => option.label)
+          }
+          data={
+            employeesData.map((employee: EmployeeData, id: number) => {
+              const button = (<SpinnerButton key={id} submitAction={() => payEmployee(firestore, {
+                employee_id: employee.id,
+                salary: employee.data.salary
+              })} actionName="pay" />);
+              return (
+                [...employeeFormOptions.map(option => employee.data[option.key]), button]
+              )
+            })
+          }
+        />
+      </LazyComponent>
     </div>
   </>);
 }

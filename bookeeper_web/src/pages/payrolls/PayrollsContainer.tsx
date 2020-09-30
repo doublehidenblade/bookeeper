@@ -7,12 +7,14 @@ import PayrollsComponent from './PayrollsComponent';
 import { Payroll, PayrollData, PayrollTableData, payrollConverter } from '../../schema/payroll';
 import { employeeConverter, Employee } from '../../schema/employee';
 import { firebaseTimestampToDateString } from '../../utils/helpers';
+import { LoadState } from '../../utils/types';
 
 export default function PayrollsDataContainer() {
   const firestore = useFirestore();
   useFirebase();
   const [payrollsData, setPayrollsData] = useState<PayrollData[]>([]);
   const [payrollsTableData, setPayrollsTableData] = useState<PayrollTableData[]>([]);
+  const [dataLoadState, setDataLoadState] = useState<LoadState>(LoadState.loading)
 
   const payrollsTableDataPromise: Promise<PayrollTableData[]> = useMemo(async () => {
     return Promise.all(payrollsData.map(async (payrollData: PayrollData) => {
@@ -44,21 +46,24 @@ export default function PayrollsDataContainer() {
     setPayrollsData(loaded);
   }
 
+  const payrollsRef = useMemo(() => firestore.collection('payrolls').withConverter(payrollConverter).orderBy('date', 'desc'), [firestore]);
+
   const getPayrolls = useCallback(async () => {
-    const ref = firestore.collection('payrolls');
-    ref.withConverter(payrollConverter).get().then(handleSnapshot);
-  }, [firestore]);
+    setDataLoadState(LoadState.loading);
+    await payrollsRef.get().then(handleSnapshot)
+      .catch(() => setDataLoadState(LoadState.error))
+      .then(() => setDataLoadState(LoadState.loaded))
+  }, [payrollsRef]);
 
   const listenForPayrollsChange = useCallback(() => {
-    const payrollsRef = firestore.collection('payrolls').withConverter(payrollConverter);
-    payrollsRef.onSnapshot(handleSnapshot);
-  }, [firestore]);
+    return payrollsRef.onSnapshot(handleSnapshot);
+  }, [payrollsRef]);
 
 
   useEffect(() => {
     getPayrolls();
-    listenForPayrollsChange();
+    return listenForPayrollsChange();
   }, [getPayrolls, listenForPayrollsChange]);
 
-  return <PayrollsComponent payrollsTableData={payrollsTableData} />;
+  return <PayrollsComponent payrollsTableData={payrollsTableData} dataLoadState={dataLoadState} />;
 }

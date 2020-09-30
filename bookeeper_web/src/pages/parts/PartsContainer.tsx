@@ -6,11 +6,14 @@ import PartsComponent from './PartsComponent';
 import { Part, PartData, partConverter } from '../../schema/part';
 import { PartTableData } from '../../schema/part';
 import { PRICE_PER_PART } from '../../utils/constants'
+import { LoadState } from '../../utils/types';
 
 export default function PartsDataContainer() {
   const firestore = useFirestore();
   useFirebase();
   const [partsData, setPartsData] = useState<PartData[]>([]);
+  const [dataLoadState, setDataLoadState] = useState<LoadState>(LoadState.loading)
+
   const partsTableData: PartTableData[] = useMemo(() => {
     return partsData.map(partData => ({
       company_name: partData.data.company_name,
@@ -33,20 +36,23 @@ export default function PartsDataContainer() {
     setPartsData(loaded);
   }
 
+  const partsRef = useMemo(() => firestore.collection('parts').withConverter(partConverter), [firestore]);
+
   const getParts = useCallback(async () => {
-    const ref = firestore.collection('parts');
-    ref.withConverter(partConverter).get().then(handleSnapshot);
-  }, [firestore]);
+    setDataLoadState(LoadState.loading);
+    await partsRef.get().then(handleSnapshot)
+      .catch(() => setDataLoadState(LoadState.error))
+      .then(() => setDataLoadState(LoadState.loaded))
+  }, [partsRef]);
 
   const listenForPartsChange = useCallback(() => {
-    const partsRef = firestore.collection('parts').withConverter(partConverter);
-    partsRef.onSnapshot(handleSnapshot);
-  }, [firestore]);
+    return partsRef.onSnapshot(handleSnapshot);
+  }, [partsRef]);
 
   useEffect(() => {
     getParts();
-    listenForPartsChange();
+    return listenForPartsChange();
   }, [getParts, listenForPartsChange]);
 
-  return <PartsComponent partsTableData={partsTableData} />;
+  return <PartsComponent partsTableData={partsTableData} dataLoadState={dataLoadState} />;
 }

@@ -7,12 +7,14 @@ import { Invoice, InvoiceData, InvoiceTableData, invoiceConverter } from '../../
 import { customerConverter, Customer } from '../../schema/customer';
 import { firebaseTimestampToDateString } from '../../utils/helpers';
 import { PRICE } from '../../utils/constants';
+import { LoadState } from '../../utils/types';
 
 export default function InvoicesDataContainer() {
   const firestore = useFirestore();
   useFirebase();
   const [invoicesData, setInvoicesData] = useState<InvoiceData[]>([]);
   const [invoicesTableData, setInvoicesTableData] = useState<InvoiceTableData[]>([]);
+  const [dataLoadState, setDataLoadState] = useState<LoadState>(LoadState.loading)
 
   const invoicesTableDataPromise: Promise<InvoiceTableData[]> = useMemo(async () => {
     return Promise.all(invoicesData.map(async (invoiceData: InvoiceData) => {
@@ -44,21 +46,24 @@ export default function InvoicesDataContainer() {
     setInvoicesData(loaded);
   }
 
+  const invoicesRef = useMemo(() => firestore.collection('invoices').withConverter(invoiceConverter).orderBy('date', 'desc'), [firestore]);
+
   const getInvoices = useCallback(async () => {
-    const ref = firestore.collection('invoices');
-    ref.withConverter(invoiceConverter).get().then(handleSnapshot);
-  }, [firestore]);
+    setDataLoadState(LoadState.loading);
+    await invoicesRef.get().then(handleSnapshot)
+      .catch(() => setDataLoadState(LoadState.error))
+      .then(() => setDataLoadState(LoadState.loaded))
+  }, [invoicesRef]);
 
   const listenForInvoicesChange = useCallback(() => {
-    const invoicesRef = firestore.collection('invoices').withConverter(invoiceConverter);
-    invoicesRef.onSnapshot(handleSnapshot);
-  }, [firestore]);
+    return invoicesRef.onSnapshot(handleSnapshot);
+  }, [invoicesRef]);
 
 
   useEffect(() => {
     getInvoices();
-    listenForInvoicesChange();
+    return listenForInvoicesChange();
   }, [getInvoices, listenForInvoicesChange]);
 
-  return <InvoicesComponent invoicesTableData={invoicesTableData} />;
+  return <InvoicesComponent invoicesTableData={invoicesTableData} dataLoadState={dataLoadState} />;
 }

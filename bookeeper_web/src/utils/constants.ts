@@ -16,3 +16,4 @@ export const PRICE_PER_PART = {
 export const COST_PER_UNIT = arrSum(PARTS_NEEDED.map(part => {
   return PARTS_PER_UNIT[part] * PRICE_PER_PART[part];
 }))
+

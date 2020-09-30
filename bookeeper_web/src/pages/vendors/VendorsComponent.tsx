@@ -6,9 +6,12 @@ import { addVendor, makePurchase } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
+import { LoadState } from '../../utils/types';
+import LazyComponent from '../common/LazyComponent';
 
 interface Props {
   vendorsData: VendorData[],
+  dataLoadState: LoadState,
 }
 
 // 2. style using Materail-UI
@@ -29,7 +32,7 @@ const purchaseOptions = [
 export default function VendorsComponent(props: Props) {
   const classes = useStyles();
   const firestore = useFirestore();
-  const { vendorsData } = props;
+  const { vendorsData, dataLoadState } = props;
 
   return (<>
     <Form
@@ -47,30 +50,32 @@ export default function VendorsComponent(props: Props) {
       ))}
     />
     <div className={classes.card}>
-      <Table
-        headerData={
-          vendorFormOptions.map(option => option.label)
-        }
-        data={
-          vendorsData.map((vendor: VendorData, id: number) => {
-            const button = (
-              <Form
-                key={id}
-                action="purchase"
-                title="purchase"
-                options={purchaseOptions}
-                onSubmit={(data: { quantity: number }) => makePurchase(firestore, {
-                  vendor_id: vendor.id,
-                  part: vendor.data.part,
-                  quantity: data.quantity,
-                })}
-              />);
-            return (
-              [...vendorFormOptions.map(option => vendor.data[option.key]), button]
-            )
-          })
-        }
-      />
+      <LazyComponent dataLoadState={dataLoadState}>
+        <Table
+          headerData={
+            vendorFormOptions.map(option => option.label)
+          }
+          data={
+            vendorsData.map((vendor: VendorData, id: number) => {
+              const button = (
+                <Form
+                  key={id}
+                  action="purchase"
+                  title="purchase"
+                  options={purchaseOptions}
+                  onSubmit={(data: { quantity: number }) => makePurchase(firestore, {
+                    vendor_id: vendor.id,
+                    part: vendor.data.part,
+                    quantity: data.quantity,
+                  })}
+                />);
+              return (
+                [...vendorFormOptions.map(option => vendor.data[option.key]), button]
+              )
+            })
+          }
+        />
+      </LazyComponent>
     </div>
   </>);
 }
