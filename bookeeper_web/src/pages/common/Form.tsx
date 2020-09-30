@@ -76,7 +76,7 @@ export default function FormComponent(props: Props) {
     const ref = await onSubmit(entries);
     if (ref == null) {
       // add error
-      alert('Failed to add, please check network connection');
+      alert('Action failed');
       return;
     }
     handleClose();

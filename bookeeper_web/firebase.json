@@ -4,13 +4,11 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    "predeploy": "npm --prefix \"$RESOURCE_DIR\" run build",
+    "source": "functions"
   },
   "hosting": {
-    "public": "public",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -21,38 +19,9 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "redirects": [
-      {
-        "source": "/employees",
-        "destination": "/?redirect=employees",
-        "type": 301
-      },
-      {
-        "source": "/vendors",
-        "destination": "/?redirect=vendors",
-        "type": 301
-      },
-      {
-        "source": "/customers",
-        "destination": "/?redirect=customers",
-        "type": 301
-      },
-      {
-        "source": "/payrolls",
-        "destination": "/?redirect=payrolls",
-        "type": 301
-      },
-      {
-        "source": "/invoices",
-        "destination": "/?redirect=invoices",
-        "type": 301
-      },
-      {
-        "source": "/purchases",
-        "destination": "/?redirect=purchases",
-        "type": 301
-      }
     ]
+  },
+  "database": {
+    "rules": "database.rules.json"
   }
 }
