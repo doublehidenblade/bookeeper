@@ -52,7 +52,7 @@
         "source": "/purchases",
         "destination": "/?redirect=purchases",
         "type": 301
-      },
+      }
     ]
   }
 }
