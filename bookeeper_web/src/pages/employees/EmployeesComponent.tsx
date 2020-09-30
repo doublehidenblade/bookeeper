@@ -29,7 +29,17 @@ export default function EmployeesComponent(props: Props) {
       action="add employee"
       title="add employee"
       options={employeeFormOptions}
-      onSubmit={(data: { employee: Employee }) => addEmployee(firestore, data)}
+      onSubmit={formData => addEmployee(firestore, new Employee(
+        formData.first_name,
+        formData.las_name,
+        formData.salary,
+        formData.SSN,
+        formData.address_line_1,
+        formData.address_line_2,
+        formData.city,
+        formData.state,
+        formData.number,
+      ))}
     />
     <div className={classes.card}>
       <Table

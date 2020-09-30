@@ -6,6 +6,7 @@ import PurchasesComponent from './PurchasesComponent';
 import { Purchase, PurchaseData, PurchaseTableData, purchaseConverter } from '../../schema/purchase';
 import { vendorConverter, Vendor } from '../../schema/vendor';
 import { firebaseTimestampToDateString } from '../../utils/helpers';
+import { PRICE_PER_PART } from '../../utils/constants';
 
 export default function PurchasesDataContainer() {
   const firestore = useFirestore();
@@ -19,13 +20,15 @@ export default function PurchasesDataContainer() {
       const vendorData: Vendor | undefined = vendorSnapshot.data();
       const vendorName = vendorData ? vendorData.company_name : null;
       const vendorPart = vendorData ? vendorData.part : null;
+      const price_per_part = vendorPart ? PRICE_PER_PART[vendorPart] : null;
+      const total = price_per_part ? purchaseData.data.quantity * price_per_part : null;
       const result: PurchaseTableData = {
         company_name: vendorName,
         part: vendorPart,
         date: firebaseTimestampToDateString(purchaseData.data.date),
-        price_per_part: purchaseData.data.price_per_part,
+        price_per_part: price_per_part,
         quantity: purchaseData.data.quantity,
-        total: purchaseData.data.quantity * purchaseData.data.price_per_part,
+        total: total,
       }
       return result;
     }))

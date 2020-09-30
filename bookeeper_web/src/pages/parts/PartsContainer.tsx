@@ -5,6 +5,7 @@ import { useFirebase, useFirestore } from 'react-redux-firebase';
 import PartsComponent from './PartsComponent';
 import { Part, PartData, partConverter } from '../../schema/part';
 import { PartTableData } from '../../schema/part';
+import { PRICE_PER_PART } from '../../utils/constants'
 
 export default function PartsDataContainer() {
   const firestore = useFirestore();
@@ -14,9 +15,9 @@ export default function PartsDataContainer() {
     return partsData.map(partData => ({
       company_name: partData.data.company_name,
       part: partData.data.name,
-      price_per_part: partData.data.price_per_part,
+      price_per_part: PRICE_PER_PART[partData.data.name],
       quantity: partData.data.quantity,
-      total: partData.data.quantity * partData.data.price_per_part,
+      total: partData.data.quantity * PRICE_PER_PART[partData.data.name],
       is_reorder: partData.data.is_reorder ? 'yes' : null
     }))
   }, [partsData]);

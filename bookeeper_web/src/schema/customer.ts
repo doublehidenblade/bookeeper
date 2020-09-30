@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import { classToPlain, plainToClass } from 'class-transformer';
 
-export const vendorFormOptions = [
+export const customerFormOptions = [
   {
     key: 'company_name',
     label: 'company name',
@@ -9,8 +9,14 @@ export const vendorFormOptions = [
     required: true,
   },
   {
-    key: 'part',
-    label: 'part',
+    key: 'first_name',
+    label: 'first name',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'last_name',
+    label: 'last name',
     type: 'string',
     required: true,
   },
@@ -46,10 +52,11 @@ export const vendorFormOptions = [
   },
 ];
 
-export class Vendor {
+export class Customer {
   constructor(
     readonly company_name: string,
-    readonly part: string,
+    readonly first_name: string,
+    readonly last_name: string,
     readonly address_line_1: string,
     readonly address_line_2: string = '',
     readonly city: string,
@@ -57,10 +64,14 @@ export class Vendor {
     readonly zip_code: number,
   ) { }
 
+  getName(): string {
+    return this.first_name + ' ' + this.last_name;
+  }
+
 }
 
-export type VendorData = {
-  data: Vendor,
+export type CustomerData = {
+  data: Customer,
   id: string,
 }
 
@@ -68,16 +79,16 @@ export type VendorData = {
 documentation:
 https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataConverter#tofirestore
 */
-export const vendorConverter = {
-  toFirestore(data: Vendor): firebase.firestore.DocumentData {
+export const customerConverter = {
+  toFirestore(data: Customer): firebase.firestore.DocumentData {
     return classToPlain(data);
   },
 
   fromFirestore(
     snapshot: firebase.firestore.QueryDocumentSnapshot,
     options: firebase.firestore.SnapshotOptions
-  ): Vendor {
+  ): Customer {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Vendor, JSONdata);
+    return plainToClass(Customer, JSONdata);
   }
 };

@@ -1,10 +1,10 @@
 import * as firebase from "firebase/app";
 import { classToPlain, plainToClass } from 'class-transformer';
 
-export const purchaseTableOptions = [
+export const invoiceTableOptions = [
   {
-    key: 'company_name',
-    label: 'supplier',
+    key: 'customer_name',
+    label: 'customer name',
     type: 'string',
     required: true,
   },
@@ -15,20 +15,14 @@ export const purchaseTableOptions = [
     required: true,
   },
   {
-    key: 'part',
-    label: 'part',
-    type: 'string',
-    required: true,
-  },
-  {
     key: 'quantity',
     label: 'quantity',
     type: 'number',
     required: true,
   },
   {
-    key: 'price_per_part',
-    label: 'price/part($)',
+    key: 'price',
+    label: 'price($)',
     type: 'number',
     required: true,
   },
@@ -40,26 +34,25 @@ export const purchaseTableOptions = [
   },
 ];
 
-export type PurchaseTableData = {
-  company_name: string | null | undefined,
-  part: string | null | undefined,
+export type InvoiceTableData = {
+  customer_name: string | null | undefined,
   date: string | null | undefined,
-  price_per_part: number | null | undefined,
   quantity: number | null | undefined,
+  price: number | null | undefined,
   total: number | null | undefined,
 }
 
-export class Purchase {
+export class Invoice {
   constructor(
     readonly date: firebase.firestore.Timestamp,
-    readonly company_id: string,
+    readonly customer_id: string,
     readonly quantity: number,
   ) { }
 
 }
 
-export type PurchaseData = {
-  data: Purchase,
+export type InvoiceData = {
+  data: Invoice,
   id: string,
 }
 
@@ -67,16 +60,16 @@ export type PurchaseData = {
 documentation:
 https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataConverter#tofirestore
 */
-export const purchaseConverter = {
-  toFirestore(data: Purchase): firebase.firestore.DocumentData {
+export const invoiceConverter = {
+  toFirestore(data: Invoice): firebase.firestore.DocumentData {
     return classToPlain(data);
   },
 
   fromFirestore(
     snapshot: firebase.firestore.QueryDocumentSnapshot,
     options: firebase.firestore.SnapshotOptions
-  ): Purchase {
+  ): Invoice {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Purchase, JSONdata);
+    return plainToClass(Invoice, JSONdata);
   }
 };

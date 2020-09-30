@@ -16,9 +16,10 @@ import history from './history';
 
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
 const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
-// const Customers = React.lazy(() => import('./pages/customers/CustomersContainer'));
+const Customers = React.lazy(() => import('./pages/customers/CustomersContainer'));
 const Payrolls = React.lazy(() => import('./pages/payrolls/PayrollsContainer'));
 const Purchases = React.lazy(() => import('./pages/purchases/PurchasesContainer'));
+const Invoices = React.lazy(() => import('./pages/invoices/InvoicesContainer'));
 const Parts = React.lazy(() => import('./pages/parts/PartsContainer'));
 
 
@@ -73,7 +74,9 @@ const RouteComponent: React.FC<Props> = () => (
         <PrivateRoute path="/payrolls" render={(props) => (<BKErrorBoundary><Payrolls {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/purchases" render={(props) => (<BKErrorBoundary><Purchases {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/vendors" render={(props) => (<BKErrorBoundary><Vendors {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/customers" render={(props) => (<BKErrorBoundary><Customers {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/inventory" render={(props) => (<BKErrorBoundary><Parts {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/invoices" render={(props) => (<BKErrorBoundary><Invoices {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>

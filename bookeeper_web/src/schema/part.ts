@@ -54,7 +54,6 @@ export class Part {
     readonly is_reorder: boolean,
     readonly name: string,
     readonly quantity: number,
-    readonly price_per_part: number,
     readonly company_name: string,
   ) { }
 

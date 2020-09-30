@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import SpinnerButton from './SpinnerButton';
 
 type fieldSpec<T> = {
@@ -22,6 +23,7 @@ interface Props {
   title: string,
   options: fieldSpec<number | string>[],
   onSubmit: Function,
+  text?: string,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FormComponent(props: Props) {
   const classes = useStyles();
-  const { action, title, options, onSubmit } = props;
+  const { action, title, options, onSubmit, text } = props;
   const [open, setOpen] = useState(false);
 
   const initialEntries = useMemo(() => {
@@ -91,6 +93,9 @@ export default function FormComponent(props: Props) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <DialogContent>
+          <DialogContentText id="form-dialog-description">
+            {text}
+          </DialogContentText>
           {
             options.map(spec => (
               <TextField
@@ -104,6 +109,7 @@ export default function FormComponent(props: Props) {
                   let value;
                   if (spec.type === 'number') {
                     value = parseInt(event.target.value);
+                    if (value < 0) value = 0;
                   } else {
                     value = event.target.value;
                   }

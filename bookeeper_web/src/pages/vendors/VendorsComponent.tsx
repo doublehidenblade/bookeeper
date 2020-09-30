@@ -1,7 +1,7 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { VendorData, vendorFormOptions } from '../../schema/vendor';
+import { VendorData, vendorFormOptions, Vendor } from '../../schema/vendor';
 import { addVendor, makePurchase } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
@@ -36,7 +36,15 @@ export default function VendorsComponent(props: Props) {
       action="add vendor"
       title="add vendor"
       options={vendorFormOptions}
-      onSubmit={(data) => addVendor(firestore, data)}
+      onSubmit={formData => addVendor(firestore, new Vendor(
+        formData.company_name,
+        formData.part,
+        formData.address_line_1,
+        formData.address_line_2,
+        formData.city,
+        formData.state,
+        formData.zip_code
+      ))}
     />
     <div className={classes.card}>
       <Table
@@ -55,7 +63,6 @@ export default function VendorsComponent(props: Props) {
                   vendor_id: vendor.id,
                   part: vendor.data.part,
                   quantity: data.quantity,
-                  price_per_part: vendor.data.price_per_part,
                 })}
               />);
             return (
