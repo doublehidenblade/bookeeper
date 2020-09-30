@@ -48,13 +48,18 @@ const Home: React.FunctionComponent<RouteComponentProps> = (props) => {
     <div className={classes.root}>
       <ButtonGroup size="small" aria-label="small outlined button group">
         <Button onClick={() => redirectTo('employees')}>Employees</Button>
-        <Button>Customers</Button>
-        <Button>Vendors</Button>
+        <Button onClick={() => redirectTo('vendors')}>Vendors</Button>
+        <Button onClick={() => redirectTo('customers')}>Customers</Button>
       </ButtonGroup>
       <ButtonGroup size="small" aria-label="small outlined button group">
         <Button onClick={() => redirectTo('payrolls')}>Payrolls</Button>
-        <Button>Two</Button>
-        <Button>Three</Button>
+        <Button onClick={() => redirectTo('purchases')}>Purchases</Button>
+        <Button onClick={() => redirectTo('invoices')}>Invoices</Button>
+      </ButtonGroup>
+      <ButtonGroup size="small" aria-label="small outlined button group">
+        <Button onClick={() => redirectTo('inventory')}>Inventory</Button>
+        <Button onClick={() => redirectTo('incomestatement')}>Income Statement</Button>
+        <Button onClick={() => redirectTo('balancesheet')}>Balance Sheet</Button>
       </ButtonGroup>
       <ButtonGroup size="small" aria-label="small outlined button group">
         <Button onClick={signout}>sign out</Button>

@@ -8,11 +8,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   table: {
     minWidth: 650,
   },
-});
+  head: {
+    backgroundColor: '#aaa',
+  },
+}));
 
 type Cell = number | string | JSX.Element;
 
@@ -30,10 +33,10 @@ export default function BasicTable(props: Props) {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
-        <TableHead>
+        <TableHead className={classes.head}>
           <TableRow>
             {
-              headerData.map((cell, id) => (<TableCell key={id} align="center">{cell}</TableCell>))
+              headerData.map((cell, id) => (<TableCell key={id} align="center">{cell ?? '-'}</TableCell>))
             }
           </TableRow>
         </TableHead>
@@ -41,7 +44,7 @@ export default function BasicTable(props: Props) {
           {data.map((row, idx) => (
             <TableRow key={idx}>
               {
-                row.map((cell, id) => (<TableCell key={id} align="center">{cell}</TableCell>))
+                row.map((cell, id) => (<TableCell key={id} align="center">{cell ?? '-'}</TableCell>))
               }
             </TableRow>
           ))}

@@ -4,8 +4,7 @@ import 'firebase/storage';
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useFirebase, useFirestore } from 'react-redux-firebase';
 import PayrollsComponent from './PayrollsComponent';
-import { Payroll, PayrollData, payrollConverter } from '../../schema/payroll';
-import { PayrollTableData } from "./PayrollsComponent";
+import { Payroll, PayrollData, PayrollTableData, payrollConverter } from '../../schema/payroll';
 import { employeeConverter, Employee } from '../../schema/employee';
 import { firebaseTimestampToDateString } from '../../utils/helpers';
 

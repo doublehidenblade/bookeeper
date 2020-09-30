@@ -1,7 +1,7 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { EmployeeData, employeeFormOptions } from '../../schema/employee';
+import { EmployeeData, employeeFormOptions, Employee } from '../../schema/employee';
 import { addEmployee, payEmployee } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
@@ -29,7 +29,7 @@ export default function EmployeesComponent(props: Props) {
       action="add employee"
       title="add employee"
       options={employeeFormOptions}
-      onSubmit={(data) => addEmployee(firestore, data)}
+      onSubmit={(data: { employee: Employee }) => addEmployee(firestore, data)}
     />
     <div className={classes.card}>
       <Table

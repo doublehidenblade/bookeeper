@@ -16,23 +16,31 @@ export const payrollTableOptions = [
   },
   {
     key: 'salary',
-    label: 'salary',
+    label: 'salary($)',
     type: 'number',
     required: true,
   },
   {
     key: 'disbursement',
-    label: 'disbursement',
+    label: 'disbursement($)',
     type: 'number',
     required: true,
   },
   {
     key: 'withholding',
-    label: 'withholding',
+    label: 'withholding($)',
     type: 'number',
     required: true,
   },
 ];
+
+export type PayrollTableData = {
+  employee_name: string | null | undefined,
+  date: string | null | undefined,
+  salary: number | null | undefined,
+  disbursement: number | null | undefined,
+  withholding: number | null | undefined,
+}
 
 export class Payroll {
   constructor(

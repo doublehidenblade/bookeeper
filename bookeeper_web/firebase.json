@@ -21,6 +21,38 @@
         "source": "**",
         "destination": "/index.html"
       }
+    ],
+    "redirects": [
+      {
+        "source": "/employees",
+        "destination": "/?redirect=employees",
+        "type": 301
+      },
+      {
+        "source": "/vendors",
+        "destination": "/?redirect=vendors",
+        "type": 301
+      },
+      {
+        "source": "/customers",
+        "destination": "/?redirect=customers",
+        "type": 301
+      },
+      {
+        "source": "/payrolls",
+        "destination": "/?redirect=payrolls",
+        "type": 301
+      },
+      {
+        "source": "/invoices",
+        "destination": "/?redirect=invoices",
+        "type": 301
+      },
+      {
+        "source": "/purchases",
+        "destination": "/?redirect=purchases",
+        "type": 301
+      },
     ]
   }
 }

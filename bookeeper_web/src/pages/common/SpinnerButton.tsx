@@ -22,7 +22,7 @@ const SpinnerButton = (props: Props) => {
           ?
           <CircularProgress />
           :
-          <Button onClick={onSubmit} >{actionName}</Button>
+          <Button color="primary" onClick={onSubmit} >{actionName}</Button>
       }
     </>);
 }

@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SpinnerButton from './SpinnerButton';
 
 type fieldSpec<T> = {
   key: string,
@@ -37,7 +38,6 @@ export default function FormComponent(props: Props) {
   const classes = useStyles();
   const { action, title, options, onSubmit } = props;
   const [open, setOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
 
   const initialEntries = useMemo(() => {
     const obj = {};
@@ -71,24 +71,22 @@ export default function FormComponent(props: Props) {
 
   const handleSubmit = async () => {
     const allGood = checkForm();
-    if (allGood) {
-      setSubmitting(true);
-      const ref = await onSubmit(entries);
-      setSubmitting(false);
-      if (ref == null) {
-        // add error
-        alert('Failed to add, please check network connection');
-        return;
-      }
-      handleClose();
-    } else {
+    if (!allGood) {
       alert('Please fill out all required fields');
     }
+    const ref = await onSubmit(entries);
+    if (ref == null) {
+      // add error
+      alert('Failed to add, please check network connection');
+      return;
+    }
+    handleClose();
+    return ref;
   }
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button color="primary" onClick={handleClickOpen}>
         {action}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -103,7 +101,15 @@ export default function FormComponent(props: Props) {
                 value={spec.value}
                 type={spec.type}
                 defaultValue={spec.defaultValue}
-                onChange={(event) => updateValue(spec.key, event.target.value)}
+                onChange={(event) => {
+                  let value;
+                  if (spec.type === 'number') {
+                    value = parseInt(event.target.value);
+                  } else {
+                    value = event.target.value;
+                  }
+                  updateValue(spec.key, value);
+                }}
                 variant="filled"
                 required={spec.required}
               />
@@ -115,22 +121,7 @@ export default function FormComponent(props: Props) {
             Cancel
           </Button>
           {
-            submitting
-              ?
-              (
-                <CircularProgress
-                  variant="determinate"
-                  size={40}
-                  thickness={4}
-                  value={100}
-                />
-              )
-              :
-              (
-                <Button onClick={handleSubmit} color="primary">
-                  Submit
-                </Button>
-              )
+            <SpinnerButton submitAction={handleSubmit} actionName="submit" />
           }
         </DialogActions>
       </Dialog>

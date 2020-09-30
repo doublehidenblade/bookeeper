@@ -1,11 +1,10 @@
-
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { payrollTableOptions, PayrollTableData } from '../../schema/payroll';
+import { partTableOptions, PartTableData } from '../../schema/part';
 import Table from '../common/Table'
 
 interface Props {
-  payrollsTableData: PayrollTableData[],
+  partsTableData: PartTableData[],
 }
 
 // 2. style using Materail-UI
@@ -15,20 +14,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 // 3. export the component
-export default function PayrollsComponent(props: Props) {
+export default function PartsComponent(props: Props) {
   const classes = useStyles();
-  const { payrollsTableData } = props;
+  const { partsTableData } = props;
 
   return (<>
     <div className={classes.card}>
       <Table
         headerData={
-          payrollTableOptions.map(option => option.label)
+          partTableOptions.map(option => option.label)
         }
         data={
-          payrollsTableData.map((payroll: PayrollTableData) => {
+          partsTableData.map((part: PartTableData) => {
             return (
-              payrollTableOptions.map(option => payroll[option.key])
+              partTableOptions.map(option => part[option.key])
             )
           })
         }

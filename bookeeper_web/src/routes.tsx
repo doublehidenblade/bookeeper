@@ -15,14 +15,23 @@ import Login from './pages/Login';
 import history from './history';
 
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
-const Payrolls = React.lazy(() => import('./pages/payrolls/PayrollsContainer'));
-// const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
+const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
 // const Customers = React.lazy(() => import('./pages/customers/CustomersContainer'));
 // const Inventory = React.lazy(() => import('./pages/inventory/InventoryContainer'));
+const Payrolls = React.lazy(() => import('./pages/payrolls/PayrollsContainer'));
+const Purchases = React.lazy(() => import('./pages/purchases/PurchasesContainer'));
+const Parts = React.lazy(() => import('./pages/parts/PartsContainer'));
+
 
 function PrivateRoute(args: { path?: string, render: (props: any) => JSX.Element, exact?: boolean }) {
   const auth = useSelector((state: { firebase: { auth: any; }; }) => state.firebase.auth);
-  return (isLoaded(auth) && !isEmpty(auth) ? <Route {...args} /> :
+  if (!isLoaded(auth)) {
+    return <div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>;
+  };
+  return (!isEmpty(auth)
+    ?
+    <Route {...args} />
+    :
     <Route
       render={() => {
         return (<Redirect
@@ -63,6 +72,9 @@ const RouteComponent: React.FC<Props> = () => (
         <Route exact path="/login" render={(props) => (<BKErrorBoundary><Login {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/employees" render={(props) => (<BKErrorBoundary><Employees {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/payrolls" render={(props) => (<BKErrorBoundary><Payrolls {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/purchases" render={(props) => (<BKErrorBoundary><Purchases {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/vendors" render={(props) => (<BKErrorBoundary><Vendors {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/inventory" render={(props) => (<BKErrorBoundary><Parts {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>

@@ -5,7 +5,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useFirebase, useFirestore } from 'react-redux-firebase';
 import EmployeesComponent from './EmployeesComponent';
 import { Employee, EmployeeData, employeeConverter } from '../../schema/employee';
-import { payEmployee } from '../../utils/functions';
 
 export default function EmployeesDataContainer() {
   const firestore = useFirestore();
