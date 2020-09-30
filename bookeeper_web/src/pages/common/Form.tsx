@@ -6,7 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import SpinnerButton from './SpinnerButton';
 
 type fieldSpec<T> = {
@@ -48,7 +47,7 @@ export default function FormComponent(props: Props) {
   }, [options]);
 
   const [entries, setEntries] = useState(initialEntries);
-  const updateValue = (key, value) => {
+  const updateValue = (key: string, value) => {
     setEntries(Object.assign({}, entries, { [key]: value }));
   }
 

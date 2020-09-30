@@ -4,10 +4,10 @@ import React from 'react';
 import Form from './common/Form';
 import { useSelector } from 'react-redux';
 import { isLoaded, isEmpty } from 'react-redux-firebase';
-import { CircularProgress } from '@material-ui/core';
 import {
   Redirect,
 } from 'react-router-dom';
+import Spinner from './common/Spinner';
 
 const useStyles = makeStyles(theme => ({
   forgotPass: {
@@ -53,7 +53,7 @@ export default function Login(props) {
   };
 
   if (!isLoaded(auth)) {
-    return <div style={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></div>
+    return <Spinner />
   }
 
   if (!isEmpty(auth)) {

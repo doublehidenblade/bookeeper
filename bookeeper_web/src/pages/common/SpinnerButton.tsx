@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import Spinner from './Spinner';
 
 interface Props {
-  submitAction: Function
+  submitAction: (data: any) => Promise<any>
   actionName: string
 }
 
@@ -20,7 +21,7 @@ const SpinnerButton = (props: Props) => {
       {
         submitting
           ?
-          <CircularProgress />
+          <Spinner />
           :
           <Button color="primary" onClick={onSubmit} >{actionName}</Button>
       }
