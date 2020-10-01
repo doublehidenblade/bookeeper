@@ -7,7 +7,7 @@ import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import SpinnerButton from '../common/SpinnerButton'
 import Table from '../common/Table'
-import { LoadState } from '../../utils/types';
+import { LoadState, Entries } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 
 interface Props {
@@ -32,16 +32,16 @@ export default function EmployeesComponent(props: Props) {
       action="add employee"
       title="add employee"
       options={employeeFormOptions}
-      onSubmit={formData => addEmployee(firestore, new Employee(
+      onSubmit={(formData: Entries) => addEmployee(firestore, new Employee(
         formData.first_name,
-        formData.las_name,
+        formData.last_name,
         formData.salary,
         formData.SSN,
         formData.address_line_1,
         formData.address_line_2,
         formData.city,
         formData.state,
-        formData.number,
+        formData.zip_code,
       ))}
     />
     <div className={classes.card}>

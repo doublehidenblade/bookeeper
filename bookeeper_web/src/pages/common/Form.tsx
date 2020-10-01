@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import SpinnerButton from './SpinnerButton';
+import { Entries } from '../../utils/types';
 
 type fieldSpec<T> = {
   key: string,
@@ -22,7 +23,7 @@ interface Props {
   action: string,
   title: string,
   options: fieldSpec<number | string>[],
-  onSubmit: Function,
+  onSubmit: (formData: Entries) => any,
   text?: string,
 }
 
@@ -74,6 +75,7 @@ export default function FormComponent(props: Props) {
     const allGood = checkForm();
     if (!allGood) {
       alert('Please fill out all required fields');
+      return;
     }
     const ref = await onSubmit(entries);
     if (ref == null) {

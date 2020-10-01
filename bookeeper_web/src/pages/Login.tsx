@@ -8,6 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import Spinner from './common/Spinner';
+import { Entries } from '../utils/types';
 
 const useStyles = makeStyles(theme => ({
   forgotPass: {
@@ -41,7 +42,7 @@ export default function Login(props) {
   const classes = useStyles();
   const auth = useSelector((state: { firebase: { auth: any; }; }) => state.firebase.auth);
 
-  const signIn = async (entry: EntryType) => {
+  const signIn = async (entry: Entries) => {
     const { email, password } = entry;
     if (email === '' || password === '') {
       alert('email and password cannot be empty');

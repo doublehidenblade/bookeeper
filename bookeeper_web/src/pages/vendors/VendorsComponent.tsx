@@ -6,7 +6,7 @@ import { addVendor, makePurchase } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
-import { LoadState } from '../../utils/types';
+import { LoadState, Entries } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 
 interface Props {
@@ -63,7 +63,7 @@ export default function VendorsComponent(props: Props) {
                   action="purchase"
                   title="purchase"
                   options={purchaseOptions}
-                  onSubmit={(data: { quantity: number }) => makePurchase(firestore, {
+                  onSubmit={(data: Entries) => makePurchase(firestore, {
                     vendor_id: vendor.id,
                     part: vendor.data.part,
                     quantity: data.quantity,

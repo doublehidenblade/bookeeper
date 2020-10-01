@@ -3,3 +3,7 @@ export enum LoadState {
   loaded,
   error
 }
+
+export type Entries = {
+  [key: string]: any
+}

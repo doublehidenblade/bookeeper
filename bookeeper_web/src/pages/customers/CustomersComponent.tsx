@@ -8,8 +8,7 @@ import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
 import { PRICE } from '../../utils/constants'
 import { partConverter } from '../../schema/part';
-import { LoadState } from '../../utils/types';
-import Spinner from '../common/Spinner'
+import { LoadState, Entries } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 
 interface Props {
@@ -83,7 +82,7 @@ export default function CustomersComponent(props: Props) {
                   action="invoice"
                   title="invoice"
                   options={invoiceOptions}
-                  onSubmit={(data: { quantity: number }) => makeInvoice(firestore, {
+                  onSubmit={(data: Entries) => makeInvoice(firestore, {
                     customer_id: customer.id,
                     quantity: data.quantity,
                     available_quantity: availableQuantity,
