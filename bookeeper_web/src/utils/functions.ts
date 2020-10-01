@@ -191,7 +191,6 @@ export const makeInvoice = async (firestore: Firestore, data: {
       throw new Error('no data');
     }
     t.update(ref, {
-      sales: data.sales + price * quantity,
       accounts_receivable: data.accounts_receivable + price * quantity,
       inventory: data.inventory - COST_PER_UNIT * quantity,
     });

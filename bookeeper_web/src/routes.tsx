@@ -13,6 +13,7 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import history from './history';
+import IncomeStatementContainer from './pages/IncomeStatement/IncomeStatementContainer';
 
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
 const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
@@ -77,6 +78,7 @@ const RouteComponent: React.FC<Props> = () => (
         <PrivateRoute path="/customers" render={(props) => (<BKErrorBoundary><Customers {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/inventory" render={(props) => (<BKErrorBoundary><Parts {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/invoices" render={(props) => (<BKErrorBoundary><Invoices {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/incomestatement" render={(props) => (<BKErrorBoundary><IncomeStatementContainer {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>
