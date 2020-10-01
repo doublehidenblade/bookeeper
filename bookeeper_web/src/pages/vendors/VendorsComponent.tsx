@@ -39,15 +39,7 @@ export default function VendorsComponent(props: Props) {
       action="add vendor"
       title="add vendor"
       options={vendorFormOptions}
-      onSubmit={formData => addVendor(firestore, new Vendor(
-        formData.company_name,
-        formData.part,
-        formData.address_line_1,
-        formData.address_line_2,
-        formData.city,
-        formData.state,
-        formData.zip_code
-      ))}
+      onSubmit={formData => addVendor(firestore, new Vendor(formData))}
     />
     <div className={classes.card}>
       <LazyComponent dataLoadState={dataLoadState}>

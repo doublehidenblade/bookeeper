@@ -37,7 +37,7 @@ export const payEmployee = async (firestore: Firestore, data: { employee_id: str
   const disbursement = salary * (1 - WITHHOLDING_RATE);
   const new_date = firebase.firestore.Timestamp.fromDate(new Date());
 
-  const payroll = new Payroll(new_date, employee_id, withholding, disbursement);
+  const payroll = new Payroll({ new_date, employee_id, withholding, disbursement });
 
   const updateVariables = firestore.runTransaction(async (t) => {
     const ref = firestore.collection("company").doc('variables');
@@ -93,7 +93,7 @@ export const makePurchase = async (firestore: Firestore, data: {
   const payment = quantity * price_per_part;
   const new_date = firebase.firestore.Timestamp.fromDate(new Date());
 
-  const purchase = new Purchase(new_date, vendor_id, quantity);
+  const purchase = new Purchase({ new_date, vendor_id, quantity });
 
   const incrementPartQuantity = firestore.runTransaction(async (t) => {
     const ref = firestore.collection("parts").doc(part);
@@ -156,7 +156,7 @@ export const makeInvoice = async (firestore: Firestore, data: {
   }
   const new_date = firebase.firestore.Timestamp.fromDate(new Date());
 
-  const invoice = new Invoice(new_date, customer_id, quantity);
+  const invoice = new Invoice({ new_date, customer_id, quantity });
 
   const decrementPartQuantity = async (part: string) => {
     await firestore.runTransaction(async (t) => {

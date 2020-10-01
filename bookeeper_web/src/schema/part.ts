@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
 
 export const partTableOptions = [
   {
@@ -50,12 +50,16 @@ export type PartTableData = {
 }
 
 export class Part {
-  constructor(
-    readonly is_reorder: boolean,
-    readonly name: string,
-    readonly quantity: number,
-    readonly company_name: string,
-  ) { }
+  is_reorder: boolean;
+  name: string;
+  quantity: number;
+  company_name: string;
+  constructor(data: Entries) {
+    this.is_reorder = Boolean(data?.is_reorder);
+    this.name = String(data?.name);
+    this.quantity = Number(data?.quantity);
+    this.company_name = String(data?.company_name);
+  }
 
 }
 
@@ -70,7 +74,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const partConverter = {
   toFirestore(data: Part): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -78,6 +82,6 @@ export const partConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Part {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Part, JSONdata);
+    return new Part(JSONdata);
   }
 };

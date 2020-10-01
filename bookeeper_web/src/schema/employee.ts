@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
 
 export const employeeFormOptions = [
   {
@@ -59,18 +59,27 @@ export const employeeFormOptions = [
 ];
 
 export class Employee {
-  constructor(
-    readonly first_name: string,
-    readonly last_name: string,
-    readonly salary: number,
-    readonly SSN: number,
-    readonly address_line_1: string,
-    readonly address_line_2: string = '',
-    readonly city: string,
-    readonly state: string,
-    readonly zip_code: number,
-    readonly num_withholdings: number = 0,
-  ) { }
+  first_name: string;
+  last_name: string;
+  salary: number;
+  SSN: number;
+  address_line_1: string;
+  address_line_2: string = '';
+  city: string;
+  state: string;
+  zip_code: number;
+  num_withholdings: number = 0;
+  constructor(data: Entries) {
+    this.first_name = String(data?.first_name);
+    this.last_name = String(data?.last_name);
+    this.salary = Number(data?.salary);
+    this.SSN = Number(data?.SSN);
+    this.address_line_1 = String(data?.address_line_1);
+    this.address_line_2 = String(data?.address_line_2 ?? '');
+    this.city = String(data?.city);
+    this.state = String(data?.state);
+    this.zip_code = Number(data?.zip_code);
+  }
 
   getName(): string {
     return this.first_name + ' ' + this.last_name;
@@ -89,7 +98,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const employeeConverter = {
   toFirestore(data: Employee): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -97,6 +106,6 @@ export const employeeConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Employee {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Employee, JSONdata);
+    return new Employee(JSONdata);
   }
 };

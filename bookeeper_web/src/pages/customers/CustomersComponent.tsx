@@ -57,16 +57,7 @@ export default function CustomersComponent(props: Props) {
       action="add customer"
       title="add customer"
       options={customerFormOptions}
-      onSubmit={formData => addCustomer(firestore, new Customer(
-        formData.company_name,
-        formData.first_name,
-        formData.last_name,
-        formData.address_line_1,
-        formData.address_line_2,
-        formData.city,
-        formData.state,
-        formData.zip_code
-      ))}
+      onSubmit={formData => addCustomer(firestore, new Customer(formData))}
     />
     <div className={classes.card}>
       <LazyComponent dataLoadState={dataLoadState} >

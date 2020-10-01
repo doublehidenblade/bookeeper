@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
+import { toTimestamp } from "../utils/helpers";
 
 export const payrollTableOptions = [
   {
@@ -43,12 +44,16 @@ export type PayrollTableData = {
 }
 
 export class Payroll {
-  constructor(
-    readonly date: firebase.firestore.Timestamp,
-    readonly employee_id: string,
-    readonly withholding: number,
-    readonly disbursement: number,
-  ) { }
+  date: firebase.firestore.Timestamp;
+  employee_id: string;
+  withholding: number;
+  disbursement: number;
+  constructor(data: Entries) {
+    this.date = toTimestamp(data?.date);
+    this.employee_id = String(data?.employee_id);
+    this.withholding = Number(data?.withholding);
+    this.disbursement = Number(data?.disbursement);
+  }
 
 }
 
@@ -63,7 +68,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const payrollConverter = {
   toFirestore(data: Payroll): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -71,6 +76,6 @@ export const payrollConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Payroll {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Payroll, JSONdata);
+    return new Payroll(JSONdata);
   }
 };

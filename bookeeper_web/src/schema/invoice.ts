@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
+import { toTimestamp } from "../utils/helpers";
 
 export const invoiceTableOptions = [
   {
@@ -43,11 +44,14 @@ export type InvoiceTableData = {
 }
 
 export class Invoice {
-  constructor(
-    readonly date: firebase.firestore.Timestamp,
-    readonly customer_id: string,
-    readonly quantity: number,
-  ) { }
+  date: firebase.firestore.Timestamp;
+  customer_id: string;
+  quantity: number;
+  constructor(data: Entries) {
+    this.date = toTimestamp(data?.date);
+    this.customer_id = String(data?.customer_id);
+    this.quantity = Number(data?.quantity);
+  }
 
 }
 
@@ -62,7 +66,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const invoiceConverter = {
   toFirestore(data: Invoice): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -70,6 +74,6 @@ export const invoiceConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Invoice {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Invoice, JSONdata);
+    return new Invoice(JSONdata);
   }
 };

@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
 
 export const vendorFormOptions = [
   {
@@ -47,15 +47,21 @@ export const vendorFormOptions = [
 ];
 
 export class Vendor {
-  constructor(
-    readonly company_name: string,
-    readonly part: string,
-    readonly address_line_1: string,
-    readonly address_line_2: string = '',
-    readonly city: string,
-    readonly state: string,
-    readonly zip_code: number,
-  ) { }
+  company_name: string;
+  part: string;
+  address_line_1: string;
+  address_line_2: string = '';
+  city: string;
+  state: string;
+  zip_code: number;
+  constructor(data: Entries) {
+    this.company_name = String(data?.company_name);
+    this.part = String(data?.part);
+    this.address_line_1 = String(data?.address_line_2 ?? '');
+    this.city = String(data?.city);
+    this.state = String(data?.state);
+    this.zip_code = Number(data?.zip_code);
+  }
 
 }
 
@@ -70,7 +76,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const vendorConverter = {
   toFirestore(data: Vendor): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -78,6 +84,6 @@ export const vendorConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Vendor {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Vendor, JSONdata);
+    return new Vendor(JSONdata);
   }
 };

@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
+import { toTimestamp } from "../utils/helpers";
 
 export const purchaseTableOptions = [
   {
@@ -50,11 +51,14 @@ export type PurchaseTableData = {
 }
 
 export class Purchase {
-  constructor(
-    readonly date: firebase.firestore.Timestamp,
-    readonly company_id: string,
-    readonly quantity: number,
-  ) { }
+  date: firebase.firestore.Timestamp;
+  company_id: string;
+  quantity: number;
+  constructor(data: Entries) {
+    this.date = toTimestamp(data?.date);
+    this.company_id = String(data?.company_id);
+    this.quantity = Number(data?.quantity);
+  }
 
 }
 
@@ -69,7 +73,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const purchaseConverter = {
   toFirestore(data: Purchase): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -77,6 +81,6 @@ export const purchaseConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Purchase {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Purchase, JSONdata);
+    return new Purchase(JSONdata);
   }
 };

@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { classToPlain, plainToClass } from 'class-transformer';
+import { Entries } from "../utils/types";
 
 export const customerFormOptions = [
   {
@@ -53,16 +53,24 @@ export const customerFormOptions = [
 ];
 
 export class Customer {
-  constructor(
-    readonly company_name: string,
-    readonly first_name: string,
-    readonly last_name: string,
-    readonly address_line_1: string,
-    readonly address_line_2: string = '',
-    readonly city: string,
-    readonly state: string,
-    readonly zip_code: number,
-  ) { }
+  company_name: string;
+  first_name: string;
+  last_name: string;
+  address_line_1: string;
+  address_line_2: string = '';
+  city: string;
+  state: string;
+  zip_code: number;
+  constructor(data: Entries) {
+    this.company_name = String(data?.company_name);
+    this.first_name = String(data?.first_name);
+    this.last_name = String(data?.last_name);
+    this.address_line_1 = String(data?.address_line_1);
+    this.address_line_2 = String(data?.address_line_2 ?? '');
+    this.city = String(data?.city);
+    this.state = String(data?.state);
+    this.zip_code = Number(data?.zip_code);
+  }
 
   getName(): string {
     return this.first_name + ' ' + this.last_name;
@@ -81,7 +89,7 @@ https://firebase.google.com/docs/reference/js/firebase.firestore.FirestoreDataCo
 */
 export const customerConverter = {
   toFirestore(data: Customer): firebase.firestore.DocumentData {
-    return classToPlain(data);
+    return { ...data };
   },
 
   fromFirestore(
@@ -89,6 +97,6 @@ export const customerConverter = {
     options: firebase.firestore.SnapshotOptions
   ): Customer {
     const JSONdata = snapshot.data(options)!;
-    return plainToClass(Customer, JSONdata);
+    return new Customer(JSONdata);
   }
 };

@@ -32,17 +32,7 @@ export default function EmployeesComponent(props: Props) {
       action="add employee"
       title="add employee"
       options={employeeFormOptions}
-      onSubmit={(formData: Entries) => addEmployee(firestore, new Employee(
-        formData.first_name,
-        formData.last_name,
-        formData.salary,
-        formData.SSN,
-        formData.address_line_1,
-        formData.address_line_2,
-        formData.city,
-        formData.state,
-        formData.zip_code,
-      ))}
+      onSubmit={(formData: Entries) => addEmployee(firestore, new Employee(formData))}
     />
     <div className={classes.card}>
       <LazyComponent dataLoadState={dataLoadState} >
