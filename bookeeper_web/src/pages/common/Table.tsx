@@ -6,9 +6,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    margin: '2em',
+    overflow: 'scroll',
+    backgroundColor: theme.palette.background.paper,
+    width: 'auto',
+  },
   table: {
     minWidth: 650,
   },
@@ -31,7 +36,7 @@ export default function BasicTable(props: Props) {
   const { headerData, data } = props;
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.root} >
       <Table className={classes.table} aria-label="simple table">
         <TableHead className={classes.head}>
           <TableRow>

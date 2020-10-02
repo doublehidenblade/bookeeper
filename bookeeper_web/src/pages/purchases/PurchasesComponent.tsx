@@ -4,6 +4,7 @@ import { purchaseTableOptions, PurchaseTableData } from '../../schema/purchase';
 import Table from '../common/Table'
 import { LoadState } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
+import Title from '../common/Title';
 
 interface Props {
   purchasesTableData: PurchaseTableData[],
@@ -23,6 +24,7 @@ export default function PurchasesComponent(props: Props) {
 
   return (<>
     <div className={classes.card}>
+      <Title content="Purchases" />
       <LazyComponent dataLoadState={dataLoadState} >
         <Table
           headerData={

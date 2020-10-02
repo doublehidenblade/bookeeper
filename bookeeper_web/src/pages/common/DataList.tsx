@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 
 interface Props {
   data: ListData,
+  style?: any,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -21,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DataList = (props: Props) => {
-  const { data } = props;
+  const { data, style } = props;
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={style}>
       {
         data.map((data, id) => (
           <List key={id}>

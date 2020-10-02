@@ -6,6 +6,12 @@ export const BILLS = 5000;
 export const ANNUAL_EXPENSES = 2000;
 export const PRICE = 200;
 export const OTHER_INCOME = 0;
+export const LAND_BUILDINGS = 0;
+export const EQUIPMENT = 0;
+export const FURNITURES_AND_FIXTURES = 0;
+export const NOTES_PAYABLE = 0;
+export const ACCRUALS = 0;
+export const MORTGAGE = 0;
 export const PARTS_NEEDED = ['glass', 'plastic'];
 export const PARTS_PER_UNIT = {
   glass: 3,

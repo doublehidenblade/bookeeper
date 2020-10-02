@@ -3,10 +3,9 @@ import React from 'react';
 import { LoadState, ListData } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 import DataList from '../common/DataList';
-import Title from '../common/Title';
 
 interface Props {
-  incomeStatementData: ListData | null,
+  balanceSheetData: ListData | null,
   dataLoadState: LoadState
 }
 
@@ -17,19 +16,21 @@ const useStyles = makeStyles(() => ({
 }));
 
 // 3. export the component
-export default function IncomeStatementComponent(props: Props) {
+export default function BalanceSheetComponent(props: Props) {
   const classes = useStyles();
-  const { incomeStatementData, dataLoadState } = props;
+  const { balanceSheetData, dataLoadState } = props;
 
   return (<>
     <div className={classes.card}>
-      <Title content="Income Statement" />
       <LazyComponent dataLoadState={dataLoadState} >
         <>
           {
-            incomeStatementData
+            balanceSheetData
               ?
-              <DataList data={incomeStatementData} />
+              (<div style={{ display: 'flex' }}>
+                <DataList data={[balanceSheetData[0]]} style={{ width: '50%' }} />
+                <DataList data={[balanceSheetData[1]]} style={{ width: '50%' }} />
+              </div>)
               :
               null
           }

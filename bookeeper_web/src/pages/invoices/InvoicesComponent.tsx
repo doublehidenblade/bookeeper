@@ -4,6 +4,7 @@ import { invoiceTableOptions, InvoiceTableData } from '../../schema/invoice';
 import Table from '../common/Table'
 import { LoadState } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
+import Title from '../common/Title';
 
 interface Props {
   invoicesTableData: InvoiceTableData[],
@@ -23,6 +24,7 @@ export default function InvoicesComponent(props: Props) {
 
   return (<>
     <div className={classes.card}>
+      <Title content="Invoices" />
       <LazyComponent dataLoadState={dataLoadState} >
         <Table
           headerData={

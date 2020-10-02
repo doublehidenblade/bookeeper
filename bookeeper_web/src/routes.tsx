@@ -13,7 +13,7 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import history from './history';
-import IncomeStatementContainer from './pages/IncomeStatement/IncomeStatementContainer';
+import { Button } from '@material-ui/core';
 
 const Employees = React.lazy(() => import('./pages/employees/EmployeesContainer'));
 const Vendors = React.lazy(() => import('./pages/vendors/VendorsContainer'));
@@ -22,6 +22,8 @@ const Payrolls = React.lazy(() => import('./pages/payrolls/PayrollsContainer'));
 const Purchases = React.lazy(() => import('./pages/purchases/PurchasesContainer'));
 const Invoices = React.lazy(() => import('./pages/invoices/InvoicesContainer'));
 const Parts = React.lazy(() => import('./pages/parts/PartsContainer'));
+const IncomeStatementContainer = React.lazy(() => import('./pages/IncomeStatement/IncomeStatementContainer'));
+const BalanceSheetContainer = React.lazy(() => import('./pages/BalanceSheet/BalanceSheetContainer'));
 
 
 function PrivateRoute(args: { path?: string, render: (props: any) => JSX.Element, exact?: boolean }) {
@@ -67,7 +69,7 @@ interface Props { }
 const RouteComponent: React.FC<Props> = () => (
   <BrowserRouter history={history}>
     <Suspense fallback={<Spinner />}>
-      <Link to="/">Home</Link>
+      <Link to="/" style={{ textDecoration: 'none' }}><Button>Home</Button></Link>
       <Switch>
         <RedirectRoute exact path='/' />
         <Route exact path="/login" render={(props) => (<BKErrorBoundary><Login {...props} /></BKErrorBoundary>)} />
@@ -79,6 +81,7 @@ const RouteComponent: React.FC<Props> = () => (
         <PrivateRoute path="/inventory" render={(props) => (<BKErrorBoundary><Parts {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/invoices" render={(props) => (<BKErrorBoundary><Invoices {...props} /></BKErrorBoundary>)} />
         <PrivateRoute path="/incomestatement" render={(props) => (<BKErrorBoundary><IncomeStatementContainer {...props} /></BKErrorBoundary>)} />
+        <PrivateRoute path="/balancesheet" render={(props) => (<BKErrorBoundary><BalanceSheetContainer {...props} /></BKErrorBoundary>)} />
       </Switch>
     </Suspense>
   </BrowserRouter>

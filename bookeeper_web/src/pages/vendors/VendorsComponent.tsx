@@ -8,6 +8,7 @@ import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
 import { LoadState, Entries } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
+import Title from '../common/Title';
 
 interface Props {
   vendorsData: VendorData[],
@@ -42,10 +43,11 @@ export default function VendorsComponent(props: Props) {
       onSubmit={formData => addVendor(firestore, new Vendor(formData))}
     />
     <div className={classes.card}>
+      <Title content="Vendors" />
       <LazyComponent dataLoadState={dataLoadState}>
         <Table
           headerData={
-            vendorFormOptions.map(option => option.label)
+            [...vendorFormOptions.map(option => option.label), 'action']
           }
           data={
             vendorsData.map((vendor: VendorData, id: number) => {

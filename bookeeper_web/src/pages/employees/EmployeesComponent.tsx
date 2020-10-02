@@ -38,7 +38,7 @@ export default function EmployeesComponent(props: Props) {
       <LazyComponent dataLoadState={dataLoadState} >
         <Table
           headerData={
-            employeeFormOptions.map(option => option.label)
+            [...employeeFormOptions.map(option => option.label), 'action']
           }
           data={
             employeesData.map((employee: EmployeeData, id: number) => {

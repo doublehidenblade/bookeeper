@@ -63,7 +63,7 @@ export default function CustomersComponent(props: Props) {
       <LazyComponent dataLoadState={dataLoadState} >
         <Table
           headerData={
-            customerFormOptions.map(option => option.label)
+            [...customerFormOptions.map(option => option.label), 'action']
           }
           data={
             customersData.map((customer: CustomerData, id: number) => {

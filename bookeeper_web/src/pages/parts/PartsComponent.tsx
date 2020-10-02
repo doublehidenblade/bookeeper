@@ -4,6 +4,7 @@ import { partTableOptions, PartTableData } from '../../schema/part';
 import Table from '../common/Table'
 import { LoadState } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
+import Title from '../common/Title';
 
 interface Props {
   partsTableData: PartTableData[],
@@ -23,6 +24,7 @@ export default function PartsComponent(props: Props) {
 
   return (<>
     <div className={classes.card}>
+      <Title content="Inventory" />
       <LazyComponent dataLoadState={dataLoadState}>
         <Table
           headerData={

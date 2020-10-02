@@ -5,6 +5,7 @@ import { payrollTableOptions, PayrollTableData } from '../../schema/payroll';
 import Table from '../common/Table'
 import { LoadState } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
+import Title from '../common/Title';
 
 interface Props {
   payrollsTableData: PayrollTableData[],
@@ -24,6 +25,7 @@ export default function PayrollsComponent(props: Props) {
 
   return (<>
     <div className={classes.card}>
+      <Title content="Payrolls" />
       <LazyComponent dataLoadState={dataLoadState}>
         <Table
           headerData={
