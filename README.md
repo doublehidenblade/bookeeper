@@ -13,13 +13,13 @@ Login combo is needed to view and modify data.
 ## assumptions
 The app is intended for one company to use, a company that builds bottles from glass and plastic. Assumptions are kept in /bookkeeper_web/src/utils/constants.ts. Please use that as the source of truth. At the time of writing this README, the assumptions are as follows:
 
-3 units of glass + 2 units of plastic = 1 unit of bottle
-glass: $50/unit
-plastic: $10/unit
-bottle: $200/unit
-cost per of manufacturing a bottle: $170
-withholding rate: 25%
-income tax rate: 30%
-cash to start with: $15000
-bills: $5000
-annual expenses: $2000
+* 3 units of glass + 2 units of plastic = 1 unit of bottle
+* glass: $50/unit
+* plastic: $10/unit
+* bottle: $200/unit
+* cost per of manufacturing a bottle: $170
+* withholding rate: 25%
+* income tax rate: 30%
+* cash to start with: $15000
+* bills: $5000
+* annual expenses: $2000
