@@ -19,7 +19,7 @@ The app is intended for one company to use, a company that builds bottles from g
 * glass: $50/unit
 * plastic: $10/unit
 * bottle: $200/unit
-* cost per of manufacturing a bottle: $170
+* cost of manufacturing a bottle: $170
 * withholding rate: 25%
 * income tax rate: 30%
 * cash to start with: $15000
