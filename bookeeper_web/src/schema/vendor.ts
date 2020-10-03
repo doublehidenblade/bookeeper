@@ -57,7 +57,8 @@ export class Vendor {
   constructor(data: Entries) {
     this.company_name = String(data?.company_name);
     this.part = String(data?.part);
-    this.address_line_1 = String(data?.address_line_2 ?? '');
+    this.address_line_1 = String(data?.address_line_1);
+    this.address_line_2 = String(data?.address_line_2 ?? '');
     this.city = String(data?.city);
     this.state = String(data?.state);
     this.zip_code = Number(data?.zip_code);
