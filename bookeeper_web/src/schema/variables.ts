@@ -1,4 +1,5 @@
 import { Entries } from "../utils/types";
+import { toCurrency } from "../utils/helpers";
 
 export class Variables {
   accounts_payable: number;
@@ -8,12 +9,12 @@ export class Variables {
   payroll: number;
   payroll_withholding: number;
   constructor(data: Entries) {
-    this.accounts_payable = Number(data?.accounts_payable);
-    this.accounts_receivable = Number(data?.accounts_receivable);
-    this.cash = Number(data?.cash);
-    this.inventory = Number(data?.inventory);
-    this.payroll = Number(data?.payroll);
-    this.payroll_withholding = Number(data?.payroll_withholding);
+    this.accounts_payable = toCurrency(Number(data?.accounts_payable));
+    this.accounts_receivable = toCurrency(Number(data?.accounts_receivable));
+    this.cash = toCurrency(Number(data?.cash));
+    this.inventory = toCurrency(Number(data?.inventory));
+    this.payroll = toCurrency(Number(data?.payroll));
+    this.payroll_withholding = toCurrency(Number(data?.payroll_withholding));
   }
 
 }

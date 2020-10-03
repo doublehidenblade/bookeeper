@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import SpinnerButton from './SpinnerButton';
 import { Entries } from '../../utils/types';
+import { isValidCurrency, isValidInteger } from '../../utils/helpers';
 
 type fieldSpec<T> = {
   key: string,
@@ -64,8 +65,21 @@ export default function FormComponent(props: Props) {
 
   const checkForm = () => {
     return options.every(option => {
-      if (option.required && entries[option.key] == null) {
+      const value = entries[option.key];
+      if (option.required && value == null) {
+        alert(option.label + ' is required');
         return false;
+      }
+      if (option.type === 'currency') {
+        if (!isValidCurrency(value)) {
+          alert(option.label + ' needs valid currency value');
+          return false;
+        }
+      } else if (option.type === 'integer') {
+        if (!isValidInteger(value)) {
+          alert(option.label + ' needs valid integer value');
+          return false;
+        }
       }
       return true;
     });
@@ -74,10 +88,10 @@ export default function FormComponent(props: Props) {
   const handleSubmit = async () => {
     const allGood = checkForm();
     if (!allGood) {
-      alert('Please fill out all required fields');
       return;
     }
     const ref = await onSubmit(entries);
+    setEntries(initialEntries);
     if (ref == null) {
       // add error
       alert('Action failed');
@@ -85,6 +99,11 @@ export default function FormComponent(props: Props) {
     }
     handleClose();
     return ref;
+  }
+
+  const handleChange = (event: any, spec: fieldSpec<string | number>) => {
+    const value = event.target.value.trim();
+    updateValue(spec.key, value);
   }
 
   return (
@@ -107,16 +126,7 @@ export default function FormComponent(props: Props) {
                 value={spec.value}
                 type={spec.type}
                 defaultValue={spec.defaultValue}
-                onChange={(event) => {
-                  let value;
-                  if (spec.type === 'number') {
-                    value = parseInt(event.target.value);
-                    if (value < 0) value = 0;
-                  } else {
-                    value = event.target.value;
-                  }
-                  updateValue(spec.key, value);
-                }}
+                onChange={event => handleChange(event, spec)}
                 variant="filled"
                 required={spec.required}
               />

@@ -1,7 +1,7 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { EmployeeData, employeeFormOptions, Employee } from '../../schema/employee';
+import { EmployeeData, employeeFormOptions, Employee, employeeTableOptions } from '../../schema/employee';
 import { addEmployee, payEmployee } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
@@ -38,7 +38,7 @@ export default function EmployeesComponent(props: Props) {
       <LazyComponent dataLoadState={dataLoadState} >
         <Table
           headerData={
-            [...employeeFormOptions.map(option => option.label), 'action']
+            [...employeeTableOptions.map(option => option.label), 'action']
           }
           data={
             employeesData.map((employee: EmployeeData, id: number) => {
@@ -47,7 +47,7 @@ export default function EmployeesComponent(props: Props) {
                 salary: employee.data.salary
               })} actionName="pay" />);
               return (
-                [...employeeFormOptions.map(option => employee.data[option.key]), button]
+                [...employeeTableOptions.map(option => employee.data[option.key]), button]
               )
             })
           }

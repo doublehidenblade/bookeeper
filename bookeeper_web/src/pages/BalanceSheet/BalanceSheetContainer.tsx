@@ -6,6 +6,7 @@ import BalanceSheetComponent from './BalanceSheetComponent';
 import { LAND_BUILDINGS, EQUIPMENT, FURNITURES_AND_FIXTURES, NOTES_PAYABLE, ACCRUALS, MORTGAGE } from '../../utils/constants';
 import { useVariables } from '../common/useVariables';
 import { ListData } from '../../utils/types';
+import { toCurrency } from '../../utils/helpers';
 
 export default function InvoicesDataContainer() {
   useFirebase();
@@ -14,13 +15,16 @@ export default function InvoicesDataContainer() {
     if (variables == null) {
       return null;
     }
-    const { cash, accounts_receivable, accounts_payable, inventory } = variables;
-    const total_current_assets = cash + accounts_receivable + inventory;
-    const total_fixed_assets = LAND_BUILDINGS + EQUIPMENT + FURNITURES_AND_FIXTURES;
-    const total_assets = total_current_assets + total_fixed_assets;
-    const total_current_liabilities = accounts_payable + NOTES_PAYABLE + ACCRUALS;
-    const total_long_term_debt = MORTGAGE;
-    const total_liabilities = total_current_liabilities + total_long_term_debt;
+    const cash = toCurrency(variables.cash);
+    const accounts_receivable = toCurrency(variables.accounts_receivable);
+    const accounts_payable = toCurrency(variables.accounts_payable);
+    const inventory = toCurrency(variables.inventory);
+    const total_current_assets = toCurrency(cash + accounts_receivable + inventory);
+    const total_fixed_assets = toCurrency(LAND_BUILDINGS + EQUIPMENT + FURNITURES_AND_FIXTURES);
+    const total_assets = toCurrency(total_current_assets + total_fixed_assets);
+    const total_current_liabilities = toCurrency(accounts_payable + NOTES_PAYABLE + ACCRUALS);
+    const total_long_term_debt = toCurrency(MORTGAGE);
+    const total_liabilities = toCurrency(total_current_liabilities + total_long_term_debt);
     return [
       {
         category: 'Assets',

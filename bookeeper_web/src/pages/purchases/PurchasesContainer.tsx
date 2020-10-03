@@ -5,7 +5,7 @@ import { useFirebase, useFirestore } from 'react-redux-firebase';
 import PurchasesComponent from './PurchasesComponent';
 import { Purchase, PurchaseData, PurchaseTableData, purchaseConverter } from '../../schema/purchase';
 import { vendorConverter, Vendor } from '../../schema/vendor';
-import { firebaseTimestampToDateString } from '../../utils/helpers';
+import { firebaseTimestampToDateString, toInteger } from '../../utils/helpers';
 import { PRICE_PER_PART } from '../../utils/constants';
 import { LoadState } from '../../utils/types';
 
@@ -23,13 +23,13 @@ export default function PurchasesDataContainer() {
       const vendorName = vendorData ? vendorData.company_name : null;
       const vendorPart = vendorData ? vendorData.part : null;
       const price_per_part = vendorPart ? PRICE_PER_PART[vendorPart] : null;
-      const total = price_per_part ? purchaseData.data.quantity * price_per_part : null;
+      const total = price_per_part ? toInteger(purchaseData.data.quantity) * price_per_part : null;
       const result: PurchaseTableData = {
         company_name: vendorName,
         part: vendorPart,
         date: firebaseTimestampToDateString(purchaseData.data.date),
         price_per_part: price_per_part,
-        quantity: purchaseData.data.quantity,
+        quantity: toInteger(purchaseData.data.quantity),
         total: total,
       }
       return result;

@@ -7,6 +7,7 @@ import { Part, PartData, partConverter } from '../../schema/part';
 import { PartTableData } from '../../schema/part';
 import { PRICE_PER_PART } from '../../utils/constants'
 import { LoadState } from '../../utils/types';
+import { toCurrency, toInteger } from '../../utils/helpers';
 
 export default function PartsDataContainer() {
   const firestore = useFirestore();
@@ -19,8 +20,8 @@ export default function PartsDataContainer() {
       company_name: partData.data.company_name,
       part: partData.data.name,
       price_per_part: PRICE_PER_PART[partData.data.name],
-      quantity: partData.data.quantity,
-      total: partData.data.quantity * PRICE_PER_PART[partData.data.name],
+      quantity: toInteger(partData.data.quantity),
+      total: toCurrency(toInteger(partData.data.quantity) * PRICE_PER_PART[partData.data.name]),
       is_reorder: partData.data.is_reorder ? 'yes' : null
     }))
   }, [partsData]);

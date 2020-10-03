@@ -5,7 +5,7 @@ import { Vendor, vendorConverter } from '../schema/vendor';
 import { Customer, customerConverter } from '../schema/customer';
 import { Purchase, purchaseConverter } from '../schema/purchase';
 import { WITHHOLDING_RATE, PARTS_NEEDED, PARTS_PER_UNIT, PRICE_PER_PART, COST_PER_UNIT } from '../utils/constants';
-import { arrMin } from '../utils/helpers';
+import { arrMin, toCurrency, toInteger } from '../utils/helpers';
 import * as FirestoreTypes from '@firebase/firestore-types'
 import * as firebase from "firebase/app";
 type Firestore = FirestoreTypes.FirebaseFirestore;
@@ -47,9 +47,9 @@ export const payEmployee = async (firestore: Firestore, data: { employee_id: str
       throw new Error('no data');
     }
     t.update(ref, {
-      payroll: data.payroll + disbursement,
-      payroll_withholding: data.payroll_withholding + withholding,
-      cash: data.cash + salary,
+      payroll: toCurrency(data.payroll) + toCurrency(disbursement),
+      payroll_withholding: toCurrency(data.payroll_withholding) + withholding,
+      cash: toCurrency(data.cash) - toCurrency(salary),
     });
   });
 
@@ -93,7 +93,7 @@ export const makePurchase = async (firestore: Firestore, data: {
   const payment = quantity * price_per_part;
   const new_date = firebase.firestore.Timestamp.fromDate(new Date());
 
-  const purchase = new Purchase({ new_date, vendor_id, quantity });
+  const purchase = new Purchase({ new_date, company_id: vendor_id, quantity });
 
   const incrementPartQuantity = firestore.runTransaction(async (t) => {
     const ref = firestore.collection("parts").doc(part);
@@ -103,7 +103,7 @@ export const makePurchase = async (firestore: Firestore, data: {
       throw new Error('no data');
     }
     t.update(ref, {
-      quantity: data.quantity + quantity,
+      quantity: toInteger(data.quantity) + toInteger(quantity),
     });
   });
 
@@ -124,8 +124,8 @@ export const makePurchase = async (firestore: Firestore, data: {
       throw new Error('no data');
     }
     t.update(ref, {
-      accounts_payable: data.accounts_payable + payment,
-      inventory: data.inventory + payment,
+      accounts_payable: toCurrency(data.accounts_payable) + toCurrency(payment),
+      inventory: toCurrency(data.inventory) + toCurrency(payment),
     });
   });
 
@@ -167,7 +167,7 @@ export const makeInvoice = async (firestore: Firestore, data: {
         throw new Error('no data');
       }
       t.update(ref, {
-        quantity: data.quantity - quantity * PARTS_PER_UNIT[part],
+        quantity: toInteger(data.quantity) - toInteger(quantity * PARTS_PER_UNIT[part]),
       });
     });
   }
@@ -191,8 +191,8 @@ export const makeInvoice = async (firestore: Firestore, data: {
       throw new Error('no data');
     }
     t.update(ref, {
-      accounts_receivable: data.accounts_receivable + price * quantity,
-      inventory: data.inventory - COST_PER_UNIT * quantity,
+      accounts_receivable: toCurrency(data.accounts_receivable) + toCurrency(price * quantity),
+      inventory: toCurrency(data.inventory) - toCurrency(COST_PER_UNIT * quantity),
     });
   });
 

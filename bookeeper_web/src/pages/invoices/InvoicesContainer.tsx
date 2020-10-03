@@ -5,7 +5,7 @@ import { useFirebase, useFirestore } from 'react-redux-firebase';
 import InvoicesComponent from './InvoicesComponent';
 import { Invoice, InvoiceData, InvoiceTableData, invoiceConverter } from '../../schema/invoice';
 import { customerConverter, Customer } from '../../schema/customer';
-import { firebaseTimestampToDateString } from '../../utils/helpers';
+import { firebaseTimestampToDateString, toCurrency, toInteger } from '../../utils/helpers';
 import { PRICE } from '../../utils/constants';
 import { LoadState } from '../../utils/types';
 
@@ -21,11 +21,12 @@ export default function InvoicesDataContainer() {
       const customerSnapshot = await firestore.collection('customers').withConverter(customerConverter).doc(invoiceData.data.customer_id).get();
       const customerData: Customer | undefined = customerSnapshot.data();
       const customerName = customerData ? customerData.company_name : null;
-      const total = invoiceData.data.quantity * PRICE;
+      const quantity = toInteger(invoiceData.data.quantity);
+      const total = toCurrency(quantity * PRICE);
       const result: InvoiceTableData = {
         customer_name: customerName,
         date: firebaseTimestampToDateString(invoiceData.data.date),
-        quantity: invoiceData.data.quantity,
+        quantity: quantity,
         price: PRICE,
         total: total,
       }

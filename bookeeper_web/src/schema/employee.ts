@@ -1,5 +1,69 @@
 import * as firebase from "firebase/app";
 import { Entries } from "../utils/types";
+import { toCurrency } from "../utils/helpers";
+
+export const employeeTableOptions = [
+  {
+    key: 'first_name',
+    label: 'first name',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'last_name',
+    label: 'last name',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'salary',
+    label: 'salary($)',
+    type: 'currency',
+    required: true,
+  },
+  {
+    key: 'SSN',
+    label: 'SSN',
+    type: 'number',
+    required: true,
+  },
+  {
+    key: 'address_line_1',
+    label: 'address line 1',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'address_line_2',
+    label: 'address line 2',
+    type: 'string',
+    required: false,
+  },
+  {
+    key: 'city',
+    label: 'city',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'state',
+    label: 'state',
+    type: 'string',
+    required: true,
+  },
+  {
+    key: 'zip_code',
+    label: 'zip code',
+    type: 'number',
+    required: true,
+  },
+  {
+    key: 'num_withholdings',
+    label: 'withholdings number',
+    type: 'number',
+    required: true,
+  },
+]
 
 export const employeeFormOptions = [
   {
@@ -16,8 +80,8 @@ export const employeeFormOptions = [
   },
   {
     key: 'salary',
-    label: 'salary',
-    type: 'number',
+    label: 'salary($)',
+    type: 'currency',
     required: true,
   },
   {
@@ -72,13 +136,14 @@ export class Employee {
   constructor(data: Entries) {
     this.first_name = String(data?.first_name);
     this.last_name = String(data?.last_name);
-    this.salary = Number(data?.salary);
+    this.salary = toCurrency(Number(data?.salary));
     this.SSN = Number(data?.SSN);
     this.address_line_1 = String(data?.address_line_1);
     this.address_line_2 = String(data?.address_line_2 ?? '');
     this.city = String(data?.city);
     this.state = String(data?.state);
     this.zip_code = Number(data?.zip_code);
+    this.num_withholdings = Number(data?.num_withholdings ?? 0);
   }
 
   getName(): string {

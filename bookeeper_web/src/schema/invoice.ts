@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import { Entries } from "../utils/types";
-import { toTimestamp } from "../utils/helpers";
+import { toTimestamp, toInteger } from "../utils/helpers";
 
 export const invoiceTableOptions = [
   {
@@ -50,7 +50,7 @@ export class Invoice {
   constructor(data: Entries) {
     this.date = toTimestamp(data?.date);
     this.customer_id = String(data?.customer_id);
-    this.quantity = Number(data?.quantity);
+    this.quantity = toInteger(Number(data?.quantity));
   }
 
 }

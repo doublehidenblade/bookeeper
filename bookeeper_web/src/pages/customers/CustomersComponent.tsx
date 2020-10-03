@@ -47,7 +47,7 @@ export default function CustomersComponent(props: Props) {
     {
       key: 'quantity',
       label: 'quantity',
-      type: 'number',
+      type: 'integer',
       required: true,
     },
   ];
@@ -79,7 +79,7 @@ export default function CustomersComponent(props: Props) {
                     available_quantity: availableQuantity,
                     price: PRICE,
                   })}
-                  text={"Available quantity: " + availableQuantity}
+                  text={"Available quantity: " + availableQuantity + ", price/unit: $" + PRICE}
                 />);
               return (
                 [...customerFormOptions.map(option => customer.data[option.key]), button]

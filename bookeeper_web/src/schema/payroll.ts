@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import { Entries } from "../utils/types";
-import { toTimestamp } from "../utils/helpers";
+import { toTimestamp, toCurrency } from "../utils/helpers";
 
 export const payrollTableOptions = [
   {
@@ -51,8 +51,8 @@ export class Payroll {
   constructor(data: Entries) {
     this.date = toTimestamp(data?.date);
     this.employee_id = String(data?.employee_id);
-    this.withholding = Number(data?.withholding);
-    this.disbursement = Number(data?.disbursement);
+    this.withholding = toCurrency(Number(data?.withholding));
+    this.disbursement = toCurrency(Number(data?.disbursement));
   }
 
 }

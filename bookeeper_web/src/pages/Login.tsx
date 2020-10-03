@@ -33,11 +33,6 @@ const loginFormOptions = [
   },
 ]
 
-type EntryType = {
-  email: string,
-  password: string,
-}
-
 export default function Login(props) {
   const classes = useStyles();
   const auth = useSelector((state: { firebase: { auth: any; }; }) => state.firebase.auth);

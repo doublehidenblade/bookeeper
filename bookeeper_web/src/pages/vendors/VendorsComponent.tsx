@@ -25,7 +25,7 @@ const purchaseOptions = [
   {
     key: 'quantity',
     label: 'quantity',
-    type: 'number',
+    type: 'integer',
     required: true,
   },
 ]

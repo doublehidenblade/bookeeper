@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
 import { Entries } from "../utils/types";
+import { toInteger } from "../utils/helpers";
 
 export const partTableOptions = [
   {
@@ -57,7 +58,7 @@ export class Part {
   constructor(data: Entries) {
     this.is_reorder = Boolean(data?.is_reorder);
     this.name = String(data?.name);
-    this.quantity = Number(data?.quantity);
+    this.quantity = toInteger(Number(data?.quantity));
     this.company_name = String(data?.company_name);
   }
 
