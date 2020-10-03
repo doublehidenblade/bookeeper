@@ -6,6 +6,8 @@ Login combo is needed to view and modify data.
 This website is a cloud based financing app that supports adding/paying employees, adding/purchasing from vendors, adding/invoicing customers, and generating income statement and balance sheet.
 
 ## Testing
+The database is already populated with some existing data.
+
 Demo add/pay employee
 https://drive.google.com/file/d/1HYjhCer4MzZAMSUSYR9VqZZ6WaUsOSxp/view?usp=sharing
 
