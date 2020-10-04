@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Returns a form based on input options. Supports textfield and selector.
+ * 
+*/
 export default function FormComponent(props: Props) {
   const classes = useStyles();
   const { action, title, options, onSubmit, text } = props;
@@ -94,8 +98,8 @@ export default function FormComponent(props: Props) {
     const ref = await onSubmit(entries);
     setEntries(initialEntries);
     if (ref == null) {
-      // add error
-      alert('Action failed');
+      // submit error
+      alert('Submit failed');
       return;
     }
     handleClose();
@@ -127,6 +131,7 @@ export default function FormComponent(props: Props) {
                     <Select
                       labelId={spec.label}
                       value={spec.value}
+                      defaultValue={spec.defaultValue}
                       onChange={event => handleChange(event, spec)}
                     >
                       {
