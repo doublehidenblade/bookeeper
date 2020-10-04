@@ -1,7 +1,7 @@
 export enum LoadState {
-  loading,
-  loaded,
-  error
+  loading = 'loading',
+  loaded = 'loaded',
+  error = 'error',
 }
 
 export type Entries = {
@@ -16,3 +16,14 @@ export type ListData = {
     value: number;
   }[];
 }[];
+
+export enum FieldTypes {
+  string = 'string',
+  number = 'number',
+  currency = 'currency',
+  integer = 'integer',
+  selector = 'selector',
+  email = 'email',
+  password = 'password',
+  date = 'date',
+}

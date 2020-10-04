@@ -1,42 +1,42 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 import { toInteger } from "../utils/helpers";
 
 export const partTableOptions = [
   {
     key: 'part',
     label: 'part',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'quantity',
     label: 'quantity',
-    type: 'number',
+    type: FieldTypes.integer,
     required: true,
   },
   {
     key: 'price_per_part',
     label: 'price/part($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'company_name',
     label: 'company name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'total',
     label: 'total($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'is_reorder',
     label: 'reorder',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
 ];

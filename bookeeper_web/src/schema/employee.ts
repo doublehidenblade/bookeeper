@@ -1,66 +1,66 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 import { toCurrency } from "../utils/helpers";
 
 export const employeeTableOptions = [
   {
     key: 'first_name',
     label: 'first name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'last_name',
     label: 'last name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'salary',
     label: 'salary($)',
-    type: 'currency',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'SSN',
     label: 'SSN',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
   {
     key: 'address_line_1',
     label: 'address line 1',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'address_line_2',
     label: 'address line 2',
-    type: 'string',
+    type: FieldTypes.string,
     required: false,
   },
   {
     key: 'city',
     label: 'city',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'state',
     label: 'state',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'zip_code',
     label: 'zip code',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
   {
     key: 'num_withholdings',
     label: 'withholdings number',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
 ]
@@ -69,55 +69,55 @@ export const employeeFormOptions = [
   {
     key: 'first_name',
     label: 'first name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'last_name',
     label: 'last name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'salary',
     label: 'salary($)',
-    type: 'currency',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'SSN',
     label: 'SSN',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
   {
     key: 'address_line_1',
     label: 'address line 1',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'address_line_2',
     label: 'address line 2',
-    type: 'string',
+    type: FieldTypes.string,
     required: false,
   },
   {
     key: 'city',
     label: 'city',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'state',
     label: 'state',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'zip_code',
     label: 'zip code',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
 ];

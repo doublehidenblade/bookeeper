@@ -8,7 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import Spinner from './common/Spinner';
-import { Entries } from '../utils/types';
+import { Entries, FieldTypes } from '../utils/types';
 
 const useStyles = makeStyles(theme => ({
   forgotPass: {
@@ -22,13 +22,13 @@ const loginFormOptions = [
   {
     key: 'email',
     label: 'email',
-    type: 'email',
+    type: FieldTypes.email,
     required: true,
   },
   {
     key: 'password',
     label: 'password',
-    type: 'password',
+    type: FieldTypes.password,
     required: true,
   },
 ]

@@ -8,7 +8,7 @@ import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
 import { PRICE } from '../../utils/constants'
 import { partConverter } from '../../schema/part';
-import { LoadState, Entries } from '../../utils/types';
+import { LoadState, Entries, FieldTypes } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 
 interface Props {
@@ -47,7 +47,7 @@ export default function CustomersComponent(props: Props) {
     {
       key: 'quantity',
       label: 'quantity',
-      type: 'integer',
+      type: FieldTypes.integer,
       required: true,
     },
   ];

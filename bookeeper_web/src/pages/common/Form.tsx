@@ -1,23 +1,24 @@
 import React, { useState, useMemo } from 'react'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, InputLabel, Select, MenuItem } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import SpinnerButton from './SpinnerButton';
-import { Entries } from '../../utils/types';
+import { Entries, FieldTypes } from '../../utils/types';
 import { isValidCurrency, isValidInteger } from '../../utils/helpers';
 
 type fieldSpec<T> = {
   key: string,
   label: string,
-  type: string,
+  type: FieldTypes,
   required: boolean,
   value?: T,
   defaultValue?: T,
+  selectOptions?: { label: string, value: string | number }[]
 }
 
 interface Props {
@@ -70,12 +71,12 @@ export default function FormComponent(props: Props) {
         alert(option.label + ' is required');
         return false;
       }
-      if (option.type === 'currency') {
+      if (option.type === FieldTypes.currency) {
         if (!isValidCurrency(value)) {
           alert(option.label + ' needs valid currency value');
           return false;
         }
-      } else if (option.type === 'integer') {
+      } else if (option.type === FieldTypes.integer) {
         if (!isValidInteger(value)) {
           alert(option.label + ' needs valid integer value');
           return false;
@@ -118,19 +119,37 @@ export default function FormComponent(props: Props) {
             {text}
           </DialogContentText>
           {
-            options.map(spec => (
-              <TextField
-                key={spec.key}
-                id={spec.key}
-                label={spec.label}
-                value={spec.value}
-                type={spec.type}
-                defaultValue={spec.defaultValue}
-                onChange={event => handleChange(event, spec)}
-                variant="filled"
-                required={spec.required}
-              />
-            ))
+            options.map(spec => {
+              if (spec.type === FieldTypes.selector) {
+                return (
+                  <div>
+                    <InputLabel id={spec.label}>{spec.label}</InputLabel>
+                    <Select
+                      labelId={spec.label}
+                      value={spec.value}
+                      onChange={event => handleChange(event, spec)}
+                    >
+                      {
+                        spec.selectOptions?.map(option => <MenuItem value={option.value}>{option.label}</MenuItem>)
+                      }
+                    </Select>
+                  </div>
+                )
+              }
+              return (
+                <TextField
+                  key={spec.key}
+                  id={spec.key}
+                  label={spec.label}
+                  value={spec.value}
+                  type={spec.type}
+                  defaultValue={spec.defaultValue}
+                  onChange={event => handleChange(event, spec)}
+                  variant="filled"
+                  required={spec.required}
+                />
+              )
+            })
           }
         </DialogContent>
         <DialogActions>

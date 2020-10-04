@@ -1,36 +1,36 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 import { toTimestamp, toCurrency } from "../utils/helpers";
 
 export const payrollTableOptions = [
   {
     key: 'employee_name',
     label: 'employee name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'date',
     label: 'date',
-    type: 'date',
+    type: FieldTypes.date,
     required: true,
   },
   {
     key: 'salary',
     label: 'salary($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'disbursement',
     label: 'disbursement($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'withholding',
     label: 'withholding($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
 ];

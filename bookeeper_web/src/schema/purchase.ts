@@ -1,42 +1,42 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 import { toTimestamp, toInteger } from "../utils/helpers";
 
 export const purchaseTableOptions = [
   {
     key: 'company_name',
     label: 'supplier',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'date',
     label: 'date',
-    type: 'date',
+    type: FieldTypes.date,
     required: true,
   },
   {
     key: 'part',
     label: 'part',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'quantity',
     label: 'quantity',
-    type: 'number',
+    type: FieldTypes.integer,
     required: true,
   },
   {
     key: 'price_per_part',
     label: 'price/part($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'total',
     label: 'total($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
 ];

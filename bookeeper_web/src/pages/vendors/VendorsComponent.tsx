@@ -6,7 +6,7 @@ import { addVendor, makePurchase } from '../../utils/functions';
 import Form from '../common/Form';
 import { useFirestore } from 'react-redux-firebase';
 import Table from '../common/Table'
-import { LoadState, Entries } from '../../utils/types';
+import { LoadState, Entries, FieldTypes } from '../../utils/types';
 import LazyComponent from '../common/LazyComponent';
 import Title from '../common/Title';
 
@@ -25,7 +25,7 @@ const purchaseOptions = [
   {
     key: 'quantity',
     label: 'quantity',
-    type: 'integer',
+    type: FieldTypes.integer,
     required: true,
   },
 ]

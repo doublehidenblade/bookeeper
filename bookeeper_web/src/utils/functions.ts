@@ -48,7 +48,7 @@ export const payEmployee = async (firestore: Firestore, data: { employee_id: str
     }
     t.update(ref, {
       payroll: toCurrency(data.payroll) + toCurrency(disbursement),
-      payroll_withholding: toCurrency(data.payroll_withholding) + withholding,
+      payroll_withholding: toCurrency(data.payroll_withholding) + toCurrency(withholding),
       cash: toCurrency(data.cash) - toCurrency(salary),
     });
   });

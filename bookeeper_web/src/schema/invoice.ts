@@ -1,36 +1,36 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 import { toTimestamp, toInteger } from "../utils/helpers";
 
 export const invoiceTableOptions = [
   {
     key: 'customer_name',
     label: 'customer name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'date',
     label: 'date',
-    type: 'date',
+    type: FieldTypes.date,
     required: true,
   },
   {
     key: 'quantity',
     label: 'quantity',
-    type: 'number',
+    type: FieldTypes.integer,
     required: true,
   },
   {
     key: 'price',
     label: 'price($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
   {
     key: 'total',
     label: 'total($)',
-    type: 'number',
+    type: FieldTypes.currency,
     required: true,
   },
 ];

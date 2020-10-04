@@ -1,47 +1,57 @@
 import * as firebase from "firebase/app";
-import { Entries } from "../utils/types";
+import { Entries, FieldTypes } from "../utils/types";
 
 export const vendorFormOptions = [
   {
     key: 'company_name',
     label: 'company name',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'part',
     label: 'part',
-    type: 'string',
+    type: FieldTypes.selector,
+    selectOptions: [
+      {
+        label: 'plastic',
+        value: 'plastic',
+      },
+      {
+        label: 'glass',
+        value: 'glass',
+      },
+    ],
     required: true,
   },
   {
     key: 'address_line_1',
     label: 'address line 1',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'address_line_2',
     label: 'address line 2',
-    type: 'string',
+    type: FieldTypes.string,
     required: false,
   },
   {
     key: 'city',
     label: 'city',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'state',
     label: 'state',
-    type: 'string',
+    type: FieldTypes.string,
     required: true,
   },
   {
     key: 'zip_code',
     label: 'zip code',
-    type: 'number',
+    type: FieldTypes.number,
     required: true,
   },
 ];
